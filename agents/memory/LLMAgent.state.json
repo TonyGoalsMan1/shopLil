@@ -1,0 +1,55 @@
+{
+  "reasoning": "Контекст: [['gift', 2], ['3D', 1], ['parallax', 1], ['motion', 1]] | 12 товаров | Запрос: создайновуюстраницу. Выбрал 1 конкретных действий.",
+  "actions": [
+    {
+      "type": "css",
+      "target": ".gift-card",
+      "change": "Усилить hover 3D tilt до 9deg",
+      "code": ".gift-card:hover{ transform: translateY(-12px) rotateX(3deg) rotateY(-3deg) scale(1.03) }",
+      "why": "Премиум интеракция"
+    }
+  ],
+  "mode": "mock",
+  "prompt": "создайновуюстраницу",
+  "context": {
+    "products_count": 12,
+    "css_size": 48595,
+    "turbo_count": 168,
+    "top_trends": [
+      [
+        "gift",
+        2
+      ],
+      [
+        "3D",
+        1
+      ],
+      [
+        "parallax",
+        1
+      ],
+      [
+        "motion",
+        1
+      ]
+    ],
+    "recommendations": [
+      "Усилить glassmorphism: backdrop-filter 20px, полупрозрачные бордеры, inner glow",
+      "Добавить 3D подиумы + параллакс + свечение как у Telegram Gifts — уже есть, усилить tilt до 8deg",
+      "Коллекционность: добавить rarity, номер #xxxx, owners, анимацию распаковки"
+    ],
+    "user_passed": "5/5",
+    "insights": [
+      "Интерес к rarity — добавить фильтр по rarity виднее",
+      "Все флоу прошли — корзина, оплата, чат работают премиально"
+    ]
+  },
+  "time": "2026-09-18 19:01:32",
+  "applied": [
+    {
+      "type": "css",
+      "target": ".gift-card",
+      "ok": true
+    }
+  ]
+}

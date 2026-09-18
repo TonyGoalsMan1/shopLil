@@ -1,0 +1,81 @@
+{
+  "time": "2026-09-18T17:50:56.175567",
+  "seo": {
+    "shop.html": {
+      "has_title": true,
+      "has_meta_desc": true,
+      "has_h1": true,
+      "has_og": true
+    },
+    "about.html": {
+      "has_title": true,
+      "has_meta_desc": false,
+      "has_h1": true,
+      "has_og": true
+    }
+  },
+  "sitemap": "static/sitemap.xml generated",
+  "emails": {
+    "welcome": {
+      "subject": "Добро пожаловать в LYLILI 🩷 — твой подарок внутри",
+      "body": "Привет! Твой первый gift — скидка 10% PROMO: LYLILI10. Открой https://lylili.love/ — подарки как в Telegram уже ждут."
+    },
+    "abandoned_cart": {
+      "subject": "Твоя корзина скучает 🎁",
+      "body": "Ты оставила подарки в корзине — вернись и получи free доставку! https://lylili.love/cart"
+    },
+    "new_drop": {
+      "subject": "Новый дроп: Unicorn Aurora 🦄 — 59€ legendary",
+      "body": "Только 500 штук. 3D подиум, голографик. Успей! https://lylili.love/"
+    }
+  },
+  "smm": [
+    {
+      "platform": "Instagram Reels",
+      "idea": "Распаковка подарка с конфетти — 15 сек",
+      "cta": "Link in bio",
+      "hashtag": "#lylili #telegramgifts"
+    },
+    {
+      "platform": "TikTok",
+      "idea": "До/После: в обычных шортах vs LYLILI",
+      "cta": "Shop now",
+      "hashtag": "#gift #premium"
+    },
+    {
+      "platform": "Telegram Channel",
+      "idea": "Анонс легендарного Diamond Prism 💎",
+      "cta": "Send Gift 89€",
+      "hashtag": ""
+    }
+  ],
+  "ads": [
+    {
+      "channel": "Meta Ads",
+      "audience": "18-28 девушки, интересы: fashion, gifts",
+      "creative": "Карусель 3D подарков + UGC",
+      "budget": "20€/day",
+      "kpi": "CTR 2.5%, CPA 12€"
+    },
+    {
+      "channel": "Yandex Direct",
+      "audience": "подарки девушке",
+      "creative": "Поиск: 'подарок как в телеграм'",
+      "budget": "15€/day",
+      "kpi": "CR 3%"
+    }
+  ],
+  "funnel": {
+    "awareness": "SMM + Awwwards + Telegram Gifts хайп",
+    "interest": "Shop 3D подарки с редкостью",
+    "desire": "Cart + чат AI + premium упаковка",
+    "action": "Checkout 3D Secure → Success",
+    "retention": "Email + повторные дропы"
+  },
+  "kpi_target": {
+    "month_1_orders": 120,
+    "aov": 58,
+    "revenue": 6960,
+    "retention": "22%"
+  }
+}

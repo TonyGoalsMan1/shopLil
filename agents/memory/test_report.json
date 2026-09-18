@@ -1,0 +1,26 @@
+{
+  "shop_status": 200,
+  "has_gifts": true,
+  "has_unicorn": true,
+  "about_status": 200,
+  "api_cart": {
+    "cart": {},
+    "count": 0,
+    "total": 0
+  },
+  "add_cart": true,
+  "security_headers": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'",
+    "X-Frame-Options": "DENY",
+    "X-Content-Type-Options": "nosniff"
+  },
+  "has_security_headers": true,
+  "response_ms": 7,
+  "perf_ok": true,
+  "has_4k": true,
+  "has_min": true,
+  "db_exists": true,
+  "db_products": 12,
+  "db_integrity": "ok",
+  "passed": true
+}

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — LYLILI Telegram Gifts</title>
+  <meta property="og:title" content="LYLILI Telegram Gifts — Premium 4K">
+  <meta property="og:description" content="Коллекционные подарки как в Telegram, 3D подиум, 4K качество, worldwide">
+  <meta property="og:image" content="/static/img/og.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ turbo.count if turbo else 0 }}">
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+</head>
+<body>
+<div id="liveBadge" style="position:fixed; top:78px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#0f0f0f,#2a2a2a); color:#fff; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:800; z-index:90; box-shadow:0 8px 24px rgba(0,0,0,0.2); display:flex; gap:8px; align-items:center; border:1px solid #333;">
+  <span style="width:8px; height:8px; background:#00ffa3; border-radius:50%; box-shadow:0 0 8px #00ffa3; animation:blink 1s infinite;"></span>
+  LIVE TURBO #{{ turbo.last if turbo else 0 }} · <span id="liveTime"></span>
+</div>
+<header class="header" style="margin-top:38px;">
+  <div class="container header-inner">
+    <a href="/" class="logo">LYLILI<span>LOVE · PREMIUM</span></a>
+    <nav class="nav"><a href="/about" class="active">{{ t.about if t else 'About' }}</a><a href="/">{{ t.shop if t else 'Shop' }}</a><a href="/cart">{{ t.cart if t else 'Cart' }}</a></nav>
+    <div class="header-right"><a href="/cart" class="cart-btn">🛒 <span class="cart-total">€{{ cart_total }}.00</span> <span class="cart-count" id="cartCount">{{ cart_count }}</span></a>
+      <div class="langs">
+        <span onclick="setLang('en')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='en' else 'opacity:0.5;' }}">🇬🇧</span>
+        <span onclick="setLang('de')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='de' else 'opacity:0.5;' }}">🇩🇪</span>
+        <span onclick="setLang('fr')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='fr' else 'opacity:0.5;' }}">🇫🇷</span>
+        <span onclick="setLang('ru')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='ru' else 'opacity:0.5;' }}">🇷🇺</span>
+      </div>
+      <div class="hamburger">☰</div></div>
+  </div>
+</header>
+<script>async function setLang(lang){ await fetch('/api/lang',{method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({lang})}); location.reload(); }</script>
+
+<section class="hero">
+  <canvas id="canvas3d" style="position:absolute; inset:0; opacity:0.8;"></canvas>
+  <div class="container hero-content">
+    <h1>About LYLILI.love</h1>
+    <p class="hero-subtitle">Передовой дизайн — подарки как в Telegram, 3D подиумы, свечение и магия ✨</p>
+    <!-- Featured gift showcase -->
+    <div style="display:flex; justify-content:center; margin:18px 0 22px;">
+      <div class="gift-card" style="max-width:360px; width:100%; --gift-bg1:#ff8fab; --gift-bg2:#7b61ff;" onclick="this.classList.add('opening'); setTimeout(()=>this.classList.remove('opening'),700)">
+        <div class="gift-stage" style="height:260px;">
+          <div class="gift-glow"></div><div class="gift-pattern"></div>
+          <div class="sparkle" style="top:20%; left:18%;"></div><div class="sparkle" style="top:28%; right:18%; animation-delay:0.5s;"></div>
+          <div class="gift-badge legendary"><span class="dot"></span> FEATURED GIFT</div>
+          <div class="gift-emoji-wrap" style="font-size:86px;">🩷</div>
+          <div class="gift-pedestal"></div><div class="gift-shine"></div>
+        </div>
+        <div class="gift-info" style="text-align:center;">
+          <h3>LYLILI — Let yourself be a girl</h3>
+          <div class="desc">Limited 2026 · Telegram Gift style</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-card">
+      <h2>LYLILI is...</h2>
+      <p><strong>LYLILI.love is about letting yourself be a girl.</strong></p>
+      <p>Mischievous, flirty, cheerful. Loving yourself, people and the world around you.</p>
+      <p>It’s like in childhood – allowing yourself to become spontaneous and open to everything new: dancing in front of the mirror and flirting with your reflection, spontaneously embarking on an unplanned trip and experiencing good adventures, pampering yourself with your favorite cakes or a sudden visit to the spa, playfully winking to a nice person.</p>
+      <p>It is the state of a girl – openness and trust in the world – that brings into a woman’s life those unforgettable moments that we store in the most colorful piggy bank of our impressions.</p>
+      <p>Теперь в формате <strong>Telegram Gifts</strong>: каждый товар — коллекционный подарок с 3D-подиумом, свечением, редкостью и анимацией открытия. Дари, коллекционируй, сияй. <strong>In LYLILI shorts. 🎁</strong></p>
+      <div class="btn-wrap"><a href="/" class="btn">Explore Gifts →</a><a href="/" class="btn btn-outline" style="margin-left:10px;">Open Shop</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="follow">
+  <h3>Follow Us</h3>
+  <div class="socials"><a href="https://www.instagram.com/lylili.love" target="_blank">IG</a><a href="https://www.youtube.com/@LYLILIlove" target="_blank">▶</a><a href="#" onclick="showToast('Telegram soon!');return false;">✈️</a></div>
+</section>
+
+<section class="container features">
+  <div class="feature"><div class="icon">🎁</div><h4>Telegram Gifts</h4><p>Animated 3D gifts with glow & rarity</p></div>
+  <div class="feature"><div class="icon">★</div><h4>Best Quality</h4><p>Premium fabrics & handmade</p></div>
+  <div class="feature"><div class="icon">🔒</div><h4>Secure Payments</h4><p>TON · Stars · 3D Secure</p></div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><h4>The best look with LYLILI gifts!</h4><p style="color:#888; margin-top:8px; line-height:1.7;">Telegram Gift Edition — каждый подарок анимирован, светится и имеет редкость. Коллекционируй как в Telegram.</p></div>
+      <div><h4>Help</h4><a href="#">Data protection</a><a href="#">Imprint</a><a href="#">Terms</a><a href="#">Withdrawal</a><a href="#">Shipping</a></div>
+      <div class="newsletter"><h4>Subscribe</h4><p style="color:#888;">Get gift drops first</p><form onsubmit="subscribe(event)"><input type="email" placeholder="Email *" required><button aria-label="action" class="btn" type="submit" style="width:100%">Subscribe</button></form></div>
+    </div>
+    <div class="copy"><span>© 2026 LYLILI Telegram Gift Edition</span><span>Built in PyCharm · Collectible 3D</span></div>
+  </div>
+</footer>
+<div id="toast" class="toast"></div>
+{% include "chat_widget.html" %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

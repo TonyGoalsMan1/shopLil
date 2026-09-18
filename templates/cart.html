@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cart — LYLILI 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo">LYLILI<span>LOVE</span></a>
+    <nav class="nav"><a href="/about">About</a><a href="/">Shop</a><a href="/cart" class="active">Cart</a></nav>
+    <div class="header-right"><a href="/cart" class="cart-btn">🛒 <span class="cart-total">${{ total }}.00</span> <span class="cart-count">{{ count }}</span></a></div>
+  </div>
+</header>
+<div class="container" style="padding:40px 24px; max-width:800px;">
+  <h1 style="font-family:'Playfair Display',serif; font-size:36px; text-align:center;">Your Cart</h1>
+  <p style="text-align:center; color:#888; margin:8px 0 24px;">3D Secure checkout · Worldwide shipping</p>
+  {% if not items %}
+    <div style="text-align:center; padding:40px; background:#fff; border-radius:20px; border:1px solid #f0e6e0;">
+      <div style="font-size:48px;">🛒</div>
+      <p style="margin:12px 0;">Your cart is empty</p>
+      <a href="/" class="btn">Go Shopping →</a>
+    </div>
+  {% else %}
+    <div style="background:#fff; border-radius:20px; border:1px solid #f0e6e0; padding:20px; box-shadow:0 12px 40px rgba(0,0,0,0.06);">
+      {% for it in items %}
+      <div class="cart-item">
+        <div class="emoji" style="background:{{ it.color }}">{{ it.emoji }}</div>
+        <div class="cart-item-info"><div style="font-weight:800;">{{ it.name }}</div><div style="color:#888; font-size:13px;">€{{ it.price }} × {{ it.qty }} = €{{ it.subtotal }}</div></div>
+        <div class="cart-qty">
+          <button aria-label="action" class="qty-btn" onclick="removeFromCart({{ it.id }})">−</button>
+          <span style="font-weight:800; min-width:20px; text-align:center;">{{ it.qty }}</span>
+          <button aria-label="action" class="qty-btn" onclick="addToCart({{ it.id }}, this); setTimeout(()=>location.reload(),400)">+</button>
+        </div>
+      </div>
+      {% endfor %}
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top:18px; margin-top:10px; border-top:2px solid #f0e6e0;">
+        <div style="font-weight:800; font-size:18px;">Total: €{{ total }}.00</div>
+        <div style="display:flex; gap:10px;">
+          <button aria-label="action" class="btn btn-outline" onclick="clearCart()">Clear</button>
+          <a href="/checkout" class="btn">Checkout →</a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+<footer class="footer"><div class="container"><div class="copy"><span>© 2026 LYLILI 3D</span><span>Secure Payments 🔒</span></div></div></footer>
+<div id="toast" class="toast"></div>
+{% include "chat_widget.html" %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

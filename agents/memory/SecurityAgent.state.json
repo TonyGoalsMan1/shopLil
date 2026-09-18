@@ -1,0 +1,14 @@
+{
+  "fixes": [
+    "added security.txt",
+    "dependencies pinned Flask 3.1.0 ok"
+  ],
+  "headers": [
+    "Content-Security-Policy",
+    "Strict-Transport-Security",
+    "X-Frame-Options",
+    "X-Content-Type-Options",
+    "Referrer-Policy",
+    "Permissions-Policy"
+  ]
+}

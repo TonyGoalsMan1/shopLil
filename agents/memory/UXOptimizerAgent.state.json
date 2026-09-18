@@ -1,0 +1,5 @@
+{
+  "fixes": [
+    "minified CSS 49492 -> 38715 bytes (78%)"
+  ]
+}

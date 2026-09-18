@@ -1,0 +1,206 @@
+{
+  "tested": 5,
+  "passed": 5,
+  "failed": 0,
+  "personas": [
+    {
+      "persona": "Аня 19, TikTok",
+      "goal": "подарок подруге, любит розовый",
+      "steps": [
+        {
+          "act": "/",
+          "status": 200,
+          "has_gift": true
+        },
+        {
+          "act": "/about",
+          "status": 200
+        },
+        {
+          "act": "add:1",
+          "ok": true,
+          "count": 1
+        },
+        {
+          "act": "add:7",
+          "ok": true,
+          "count": 2
+        },
+        {
+          "act": "/cart",
+          "status": 200,
+          "has_total": true
+        },
+        {
+          "act": "chat:подарок подруге розовый?",
+          "reply": "Каждый товар — коллекционный подарок как в Telegram: подиум, свечение, редкость rare/epic/legendary, анимация распаковки"
+        },
+        {
+          "act": "checkout",
+          "ok": true,
+          "order": "970DE3AD"
+        }
+      ],
+      "passed": true,
+      "feedback": "Все супер, премиум!"
+    },
+    {
+      "persona": "Мария 32, мама",
+      "goal": "практичные шорты, доставка",
+      "steps": [
+        {
+          "act": "/",
+          "status": 200,
+          "has_gift": true
+        },
+        {
+          "act": "filter:rare",
+          "simulated": "filter"
+        },
+        {
+          "act": "add:3",
+          "ok": true,
+          "count": 1
+        },
+        {
+          "act": "/cart",
+          "status": 200,
+          "has_total": true
+        },
+        {
+          "act": "chat:доставка сколько?",
+          "reply": "Доставка worldwide 5-12 дней, бесплатно от 100€. Трекинг после оплаты. Куда доставляем?"
+        },
+        {
+          "act": "chat:возврат?",
+          "reply": "Возврат 14 дней без вопросов, пиши на help@lylili.love"
+        }
+      ],
+      "passed": true,
+      "feedback": "Все супер, премиум!"
+    },
+    {
+      "persona": "Крис 25, блогер",
+      "goal": "контент, 4K фото, Telegram gifts",
+      "steps": [
+        {
+          "act": "/",
+          "status": 200,
+          "has_gift": true
+        },
+        {
+          "act": "openGift:2",
+          "simulated": "confetti"
+        },
+        {
+          "act": "add:2",
+          "ok": true,
+          "count": 1
+        },
+        {
+          "act": "add:6",
+          "ok": true,
+          "count": 2
+        },
+        {
+          "act": "/cart",
+          "status": 200,
+          "has_total": true
+        },
+        {
+          "act": "/checkout",
+          "status": 200
+        },
+        {
+          "act": "chat:редкость?",
+          "reply": "Каждый товар — коллекционный подарок как в Telegram: подиум, свечение, редкость rare/epic/legendary, анимация распаковки"
+        }
+      ],
+      "passed": true,
+      "feedback": "Все супер, премиум!"
+    },
+    {
+      "persona": "Ольга 28, gift-buyer",
+      "goal": "подарить парню, оплата TON",
+      "steps": [
+        {
+          "act": "/",
+          "status": 200,
+          "has_gift": true
+        },
+        {
+          "act": "add:5",
+          "ok": true,
+          "count": 1
+        },
+        {
+          "act": "add:8",
+          "ok": true,
+          "count": 2
+        },
+        {
+          "act": "/cart",
+          "status": 200,
+          "has_total": true
+        },
+        {
+          "act": "chat:как оплатить TON?",
+          "reply": "Принимаем Visa/Mastercard, Apple Pay, TON и Stars. 3D Secure, оплата на /checkout. Какая карта?"
+        }
+      ],
+      "passed": true,
+      "feedback": "Все супер, премиум!"
+    },
+    {
+      "persona": "Вика 22, premium",
+      "goal": "коллекция legendary, 4K качество",
+      "steps": [
+        {
+          "act": "/",
+          "status": 200,
+          "has_gift": true
+        },
+        {
+          "act": "filter:legendary",
+          "simulated": "filter"
+        },
+        {
+          "act": "openGift:7",
+          "simulated": "confetti"
+        },
+        {
+          "act": "add:7",
+          "ok": true,
+          "count": 1
+        },
+        {
+          "act": "add:8",
+          "ok": true,
+          "count": 2
+        },
+        {
+          "act": "/cart",
+          "status": 200,
+          "has_total": true
+        },
+        {
+          "act": "checkout",
+          "ok": true,
+          "order": "1480CB49"
+        },
+        {
+          "act": "chat:премиум упаковка?",
+          "reply": "Я LYLILI AI 🎀 Знаю всё про подарки, корзину, оплату и доставку. Спроси: 'что в корзине?', 'как оплатить?', 'сколько дост"
+        }
+      ],
+      "passed": true,
+      "feedback": "Все супер, премиум!"
+    }
+  ],
+  "summary": "5/5 персон прошли полный флоу без ошибок",
+  "insights": [
+    "Интерес к rarity — добавить фильтр по rarity виднее",
+    "Все флоу прошли — корзина, оплата, чат работают премиально",
+    "4K и Telegram gift дизайн высоко оценили 19-22 лет"
+  ]
+}

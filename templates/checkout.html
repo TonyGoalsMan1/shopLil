@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout — LYLILI Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo">LYLILI<span>LOVE · PREMIUM</span></a>
+    <nav class="nav"><a href="/about">About</a><a href="/">Shop</a><a href="/cart" class="active">Checkout</a></nav>
+    <div class="header-right"><a href="/cart" class="cart-btn">🛒 <span class="cart-total">€{{ total }}.00</span> <span class="cart-count">{{ count }}</span></a></div>
+  </div>
+</header>
+<div class="container" style="max-width:1000px; padding:36px 24px;">
+  <div style="text-align:center; margin-bottom:22px;">
+    <h1 style="font-family:'Playfair Display',serif; font-size:38px; font-weight:800;">Оплата — Premium Checkout</h1>
+    <p style="color:#888;">3D Secure · Защищено · Доставка worldwide</p>
+    <div style="display:flex; justify-content:center; gap:8px; margin-top:10px;">
+      <span style="background:#0f0f0f; color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:800;">🔒 256-bit SSL</span>
+      <span style="background:#fff; border:1px solid #f0e6e0; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:700;">VISA · MC · Apple Pay · TON</span>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:24px; align-items:start;">
+    <form id="checkoutForm" onsubmit="doCheckout(event)" style="background:#fff; border:1px solid #f0e6e0; border-radius:20px; padding:24px; box-shadow:0 12px 40px rgba(0,0,0,0.06);">
+      <h3 style="font-weight:800; margin-bottom:14px;">Детали заказа</h3>
+      <label style="display:block; margin-bottom:10px;"><span style="font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">Email *</span><input id="email" type="email" required placeholder="you@mail.com" style="width:100%; padding:12px 14px; border:1px solid #e8e0de; border-radius:10px; margin-top:6px;"></label>
+      <label style="display:block; margin-bottom:10px;"><span style="font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">Имя на карте *</span><input id="name" type="text" required placeholder="ANNA SMITH" style="width:100%; padding:12px 14px; border:1px solid #e8e0de; border-radius:10px; margin-top:6px;"></label>
+      <label style="display:block; margin-bottom:10px;"><span style="font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">Номер карты *</span><input id="card" type="text" required placeholder="4242 4242 4242 4242" maxlength="19" oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim()" style="width:100%; padding:12px 14px; border:1px solid #e8e0de; border-radius:10px; margin-top:6px;"></label>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <label><span style="font-size:12px; font-weight:700;">Срок</span><input type="text" placeholder="12/28" required style="width:100%; padding:12px 14px; border:1px solid #e8e0de; border-radius:10px; margin-top:6px;"></label>
+        <label><span style="font-size:12px; font-weight:700;">CVC</span><input type="text" placeholder="123" required maxlength="3" style="width:100%; padding:12px 14px; border:1px solid #e8e0de; border-radius:10px; margin-top:6px;"></label>
+      </div>
+      <label style="display:block; margin-bottom:14px; margin-top:10px;"><span style="font-size:12px; font-weight:700;">Адрес доставки</span><input type="text" placeholder="Moscow, Tverskaya 1" required style="width:100%; padding:12px 14px; border:1px solid #e8e0de; border-radius:10px; margin-top:6px;"></label>
+      <button aria-label="action" type="submit" class="btn" style="width:100%; justify-content:center;">Оплатить €{{ total }} →</button>
+      <p style="text-align:center; color:#888; font-size:11px; margin-top:10px;">Нажимая оплатить, вы соглашаетесь с Terms. Тестовая карта 4242 4242 4242 4242 работает.</p>
+    </form>
+    <div style="background:linear-gradient(180deg,#0f0f0f,#1a1a1a); color:#fff; border-radius:20px; padding:22px; box-shadow:0 16px 40px rgba(0,0,0,0.2);">
+      <h4 style="font-weight:800; letter-spacing:1px; text-transform:uppercase; font-size:12px; opacity:0.9;">Ваш заказ</h4>
+      {% for it in items %}
+      <div style="display:flex; gap:12px; align-items:center; padding:12px 0; border-bottom:1px solid #2a2a2a;">
+        <div style="width:48px; height:48px; border-radius:12px; background:{{ it.color }}; display:flex; align-items:center; justify-content:center; font-size:22px;">{{ it.emoji }}</div>
+        <div style="flex:1;"><div style="font-weight:700; font-size:13px;">{{ it.name }}</div><div style="color:#aaa; font-size:12px;">{{ it.qty }} × €{{ it.price }}</div></div>
+        <div style="font-weight:800;">€{{ it.subtotal }}</div>
+      </div>
+      {% endfor %}
+      <div style="display:flex; justify-content:space-between; margin-top:14px; font-weight:800; font-size:16px;"><span>Итого</span><span>€{{ total }}</span></div>
+      <div style="margin-top:10px; color:#aaa; font-size:11px;">Доставка 5-12 дней · Бесплатно от €100 · Возврат 14 дней</div>
+      <div style="margin-top:14px; background:#1e1e1e; border-radius:12px; padding:12px; font-size:12px; color:#ccc;">💎 Premium упаковка · Подарочная коробка включена</div>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+{% include "chat_widget.html" %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+async function doCheckout(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button'); btn.textContent='Обработка…'; btn.disabled=true;
+  const payload={email:document.getElementById('email').value, name:document.getElementById('name').value, card:document.getElementById('card').value};
+  try{
+    const r=await fetch('/api/checkout',{method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify(payload)});
+    const d=await r.json();
+    if(!d.ok) throw new Error(d.error||'Ошибка');
+    location.href='/success/'+d.order_id;
+  }catch(err){
+    showToast(err.message);
+    btn.textContent='Оплатить €{{ total }} →'; btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>

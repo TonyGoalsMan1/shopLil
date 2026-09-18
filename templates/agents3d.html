@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LYLILI Office 3D — GAME LEVEL · PREMIUM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Playfair+Display:wght@800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter, sans-serif; overflow:hidden; background:#060608; color:#fff}
+#canvas{position:fixed; inset:0; width:100%; height:100%; display:block}
+#loader{position:fixed; inset:0; background:#050507; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:100; transition:opacity 0.6s}
+#loader h1{font-family:Playfair Display; font-size:28px; letter-spacing:2px}
+#loader .bar{width:220px; height:4px; background:#1a1a1e; border-radius:999px; margin-top:16px; overflow:hidden}
+#loader .bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,#00ffa3,#7b61ff); border-radius:999px; animation:load 1.8s ease forwards}
+@keyframes load{to{width:100%}}
+.ui-top{position:fixed; top:0; left:0; right:0; height:62px; background:rgba(8,8,10,0.98); backdrop-filter:blur(20px); border-bottom:1px solid #1c1c1e; display:flex; align-items:center; justify-content:space-between; padding:0 16px; z-index:12}
+.brand{font-family:Playfair Display; font-weight:800; font-size:17px; letter-spacing:2px}
+.brand small{font-family:JetBrains Mono; font-weight:600; font-size:10px; letter-spacing:1.2px; opacity:0.55; display:block}
+.stats{display:flex; gap:7px; align-items:center}
+.pill{background:#141416; border:1px solid #252525; padding:6px 10px; border-radius:999px; font-size:11px; font-weight:800; display:flex; gap:6px; align-items:center}
+.pill.live{background:#00ffa3; color:#0a0a0a; border-color:#00ffa3; animation:pulseLive 1.6s infinite}
+.pill.gold{background:#d4af37; color:#0a0a0a}
+@keyframes pulseLive{0%,100%{box-shadow:0 0 0 0 rgba(0,255,163,0.4)}50%{box-shadow:0 0 0 8px rgba(0,255,163,0)}}
+.help{position:fixed; top:70px; left:50%; transform:translateX(-50%); background:#fff; color:#0a0a0a; padding:8px 14px; border-radius:999px; font-size:11px; font-weight:700; z-index:12; box-shadow:0 12px 32px rgba(0,0,0,0.35); display:flex; gap:10px; align-items:center}
+.help kbd{background:#0a0a0a; color:#fff; padding:3px 7px; border-radius:6px; font-size:10px; font-family:JetBrains Mono}
+.legend{position:fixed; top:74px; left:12px; background:rgba(14,14,16,0.98); border:1px solid #242424; border-radius:16px; padding:12px; z-index:11; width:214px}
+.legend h4{font-size:10px; letter-spacing:1px; text-transform:uppercase; opacity:0.8; margin-bottom:8px}
+.legend .row{display:flex; align-items:center; gap:9px; margin:5px 0; font-size:11px; font-weight:600}
+.dot{width:11px; height:11px; border-radius:50%}
+.controls{position:fixed; top:74px; right:12px; background:rgba(14,14,16,0.98); border:1px solid #242424; border-radius:16px; padding:12px; z-index:11; width:192px}
+.controls h4{font-size:10px; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px}
+.controls button{width:100%; padding:9px; border-radius:10px; border:1px solid #2a2a2a; background:#fff; color:#0a0a0a; font-weight:800; font-size:11px; cursor:pointer; margin:3px 0; transition:0.15s}
+.controls button:hover{background:#0a0a0a; color:#fff; transform:translateY(-1px)}
+.controls .hint{font-size:10px; opacity:0.55; margin-top:8px; line-height:1.4}
+.tracking{position:fixed; top:74px; right:216px; bottom:14px; width:360px; background:rgba(10,10,12,0.98); border:1px solid #242424; border-radius:16px; display:flex; flex-direction:column; z-index:11; overflow:hidden}
+.tracking-head{padding:12px 14px; border-bottom:1px solid #1e1e1e; display:flex; justify-content:space-between; align-items:center}
+.tracking-head h4{font-size:11px; letter-spacing:1px; text-transform:uppercase}
+.tracking-head span{font-size:10px; background:#00ffa3; color:#0a0a0a; padding:4px 8px; border-radius:999px; font-weight:800}
+.tracking-log{flex:1; overflow:auto; padding:10px; display:flex; flex-direction:column; gap:7px; font-family:JetBrains Mono; font-size:11px}
+.log-item{display:flex; gap:8px; padding:9px 10px; background:#141416; border:1px solid #1e1e1e; border-radius:10px; line-height:1.45; animation:slideIn 0.35s ease}
+@keyframes slideIn{from{transform:translateX(8px); opacity:0} to{transform:translateX(0); opacity:1}}
+.log-item.work{border-left:3px solid #00ffa3}
+.log-item.move{border-left:3px solid #00d4ff}
+.log-item.build{border-left:3px solid #d4af37}
+.log-item.code{border-left:3px solid #7b61ff; background:#1a1420}
+.log-time{color:#888; font-size:10px; white-space:nowrap}
+.log-agent{font-weight:800; white-space:nowrap}
+.log-msg{color:#e8e8e8; flex:1}
+.log-file{font-size:10px; color:#7b61ff; font-weight:700}
+.bottom{position:fixed; bottom:12px; left:12px; right:386px; display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px; z-index:11}
+.card{background:rgba(16,16,18,0.98); border:1px solid #242424; border-radius:14px; padding:10px; backdrop-filter:blur(12px)}
+.card h5{font-size:9px; letter-spacing:1px; text-transform:uppercase; opacity:0.6; margin-bottom:6px}
+.card .val{font-size:11px; font-weight:700; line-height:1.35}
+.card .bar{height:4px; background:#1a1a1c; border-radius:999px; margin-top:8px; overflow:hidden}
+.card .bar i{display:block; height:100%; background:linear-gradient(90deg,#00ffa3,#00d4ff); border-radius:999px; transition:width 0.8s}
+.workflow{position:fixed; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(16,16,18,0.98); border:1px solid #242424; border-radius:999px; padding:8px 14px; display:flex; gap:8px; align-items:center; z-index:11; font-size:11px; font-weight:700}
+.workflow span{padding:5px 10px; border-radius:999px; background:#0a0a0a; border:1px solid #1e1e1e}
+.workflow i{color:#00ffa3}
+@media(max-width:1150px){.tracking{width:300px; right:12px; top:420px; bottom:88px} .bottom{right:12px; bottom:210px} }
+</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="loader"><h1>LYLILI HOUSE</h1><div style="opacity:0.6; font-size:11px; letter-spacing:1px; margin-top:6px">GAME LEVEL · 4K · PREMIUM</div><div class="bar"><i></i></div></div>
+<canvas id="canvas"></canvas>
+<div class="ui-top">
+  <div class="brand">LYLILI HOUSE <small>GAME LEVEL · 10 АГЕНТОВ · БЕЗ ВРЕЗАНИЙ · ДЕТАЛЬНО</small></div>
+  <div class="stats">
+    <span class="pill live" id="s-turbo">● TURBO #0</span>
+    <span class="pill" id="s-products">10 товаров</span>
+    <span class="pill gold" id="s-orders">0 заказов</span>
+    <span class="pill" id="s-cart">🛒 0</span>
+    <span class="pill" id="s-speed">⚡ ×1</span>
+  </div>
+</div>
+<div class="help"><kbd>Мышь</kbd> вращать · <kbd>Колесо</kbd> зум · <kbd>Клик</kbd> по человечку · <kbd>R</kbd> сброс · <kbd>Space</kbd> пауза</div>
+
+<div class="legend">
+  <h4>10 зон — без коллизий</h4>
+  <div class="row"><span class="dot" style="background:#e85a7a"></span> <b>TrendScout</b> — разведка</div>
+  <div class="row"><span class="dot" style="background:#00d4ff"></span> <b>DB</b> — база</div>
+  <div class="row"><span class="dot" style="background:#ffd700"></span> <b>Security</b> — защита</div>
+  <div class="row"><span class="dot" style="background:#00ffa3"></span> <b>4K</b> — качество</div>
+  <div class="row"><span class="dot" style="background:#7b61ff"></span> <b>Design</b> — дизайн</div>
+  <div class="row"><span class="dot" style="background:#ff8c00"></span> <b>UX</b> — UX</div>
+  <div class="row"><span class="dot" style="background:#ff6b9d"></span> <b>Marketer</b> — маркетинг</div>
+  <div class="row"><span class="dot" style="background:#b5a0ff"></span> <b>Users</b> — тестеры</div>
+  <div class="row"><span class="dot" style="background:#fff"></span> <b>Lead</b> — лид</div>
+  <div class="row"><span class="dot" style="background:#d4af37"></span> <b>Turbo</b> — ускоритель</div>
+  <div style="margin-top:8px; padding:8px; background:#0f0f0f; border-radius:10px; font-size:10px; line-height:1.4; border:1px solid #1e1e1e">Стол <b>1.8м</b> от человечка — <b>не въезжает</b>. Конвейер — <b>коммиты file:line</b> с кодом. Диалоги <b>медленнее 5с</b>.</div>
+</div>
+
+<div class="controls">
+  <h4>Управление</h4>
+  <button aria-label="action" onclick="resetCam()">📷 Вид сверху</button>
+  <button aria-label="action" onclick="toggleConveyor()" id="btnConv">⏸ Пауза конвейера</button>
+  <button aria-label="action" onclick="speedUp()" id="btnSpeed">⚡ Ускорить ×1</button>
+  <button aria-label="action" onclick="highlightWork()">✨ Подсветить работу</button>
+  <button aria-label="action" onclick="location.href='/'">🛒 Магазин</button>
+  <div class="hint">Человечки: <b>печатают 4с → идут 3с → несут 3с</b>. Пузырь <b>5.2с</b> — успеваешь прочитать.</div>
+</div>
+
+<div class="tracking">
+  <div class="tracking-head"><h4>📋 Трекинг · ДЕТАЛЬНО</h4><span id="trackCount">0 событий</span></div>
+  <div style="padding:10px; border-bottom:1px solid #1e1e1e; background:#0f0f0f;">
+    <div style="font-size:10px; font-weight:800; letter-spacing:0.8px; margin-bottom:6px; opacity:0.9">🤖 LLM — конкретный файл:строка</div>
+    <div style="display:flex; gap:6px;">
+      <input id="llmPrompt" placeholder="Спроси: покажи где поменял app.py:108" style="flex:1; padding:8px 10px; border-radius:8px; border:1px solid #2a2a2a; background:#1a1a1c; color:#fff; font-size:11px; font-family:JetBrains Mono;">
+      <button aria-label="action" onclick="askLLM(false)" style="padding:8px 10px; border-radius:8px; border:1px solid #00ffa3; background:#00ffa3; color:#0a0a0a; font-weight:800; font-size:11px; cursor:pointer;">Спросить</button>
+      <button aria-label="action" onclick="askLLM(true)" style="padding:8px 10px; border-radius:8px; border:1px solid #d4af37; background:#d4af37; color:#0a0a0a; font-weight:800; font-size:11px; cursor:pointer;">✨ Применить</button>
+    </div>
+    <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
+      <button aria-label="action" onclick="setPrompt('Что поменял? Покажи файл:строка и код')" style="padding:4px 8px; border-radius:999px; border:1px solid #252525; background:#1a1a1c; color:#ccc; font-size:10px; cursor:pointer;">📄 где поменял?</button>
+      <button aria-label="action" onclick="setPrompt('Что протестировал? Покажи тест')" style="padding:4px 8px; border-radius:999px; border:1px solid #252525; background:#1a1a1c; color:#ccc; font-size:10px; cursor:pointer;">🧪 тесты</button>
+      <button aria-label="action" onclick="setPrompt('Сделай дизайн премиум gold')" style="padding:4px 8px; border-radius:999px; border:1px solid #252525; background:#1a1a1c; color:#ccc; font-size:10px; cursor:pointer;">gold</button>
+    </div>
+    <div id="llmResponse" style="margin-top:8px; padding:8px; background:#141416; border:1px solid #1e1e1e; border-radius:10px; font-size:11px; line-height:1.4; display:none; max-height:150px; overflow:auto; font-family:JetBrains Mono;"></div>
+  </div>
+  <div class="tracking-log" id="trackingLog">
+    <div class="log-item work"><span class="log-time">--:--:--</span><span class="log-agent" style="color:#00ffa3">System</span><span class="log-msg">Запуск GAME LEVEL...</span></div>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="card"><h5>TrendScout · Разведка</h5><div class="val" id="c-trend">Сканирует Awwwards...</div><div class="bar"><i id="b-trend" style="width:72%"></i></div></div>
+  <div class="card"><h5>Design · Мутация CSS</h5><div class="val" id="c-design">midnight · 60 CSS</div><div class="bar"><i id="b-design" style="width:88%"></i></div></div>
+  <div class="card"><h5>Lead · Роадмап</h5><div class="val" id="c-lead">Go Live 17/17 ✓</div><div class="bar"><i style="width:100%"></i></div></div>
+  <div class="card"><h5>Users · 5 тестеров</h5><div class="val" id="c-test">5/5 ✓ корзина, оплата</div><div class="bar"><i id="b-test" style="width:100%"></i></div></div>
+</div>
+
+<div class="workflow"><span>Scout 🔍</span><i>→</i><span>Design 🎨</span><i>→</i><span>DB 🗄️</span><i>→</i><span>Test 👥</span><i>→</i><span>Lead 👑</span><i>→</i><span>Shop 🛒</span></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const canvas=document.getElementById('canvas');
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x060608);
+scene.fog=new THREE.Fog(0x060608, 22, 48);
+
+const renderer=new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'});
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.18; renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+
+const camera=new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(18,14,18);
+const controls=new OrbitControls(camera, renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=0.06; controls.target.set(0,0,0);
+controls.maxPolarAngle=Math.PI/2.05; controls.minDistance=6; controls.maxDistance=32;
+function resize(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+setTimeout(()=>{ document.getElementById('loader').style.opacity='0'; setTimeout(()=>document.getElementById('loader').remove(),600); }, 900);
+
+// Lights GAME LEVEL
+scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+const sun=new THREE.DirectionalLight(0xfff6e0, 1.6); sun.position.set(14,22,12); sun.castShadow=true;
+sun.shadow.mapSize.set(4096,4096); sun.shadow.camera.left=-22; sun.shadow.camera.right=22; sun.shadow.camera.top=22; sun.shadow.camera.bottom=-22; sun.shadow.bias=-0.0006;
+scene.add(sun);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x222222, 0.45));
+const gold=new THREE.PointLight(0xd4af37, 1.0, 22); gold.position.set(0,6,0); scene.add(gold);
+const pink=new THREE.PointLight(0xffb3c6, 0.65, 24); pink.position.set(-11,5,-9); scene.add(pink);
+
+// Floor + zones — GAME
+const floorMat=new THREE.MeshStandardMaterial({color:0x111113, roughness:0.78, metalness:0.04});
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(30,30), floorMat); floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
+const grid=new THREE.GridHelper(30,30, 0x1e1e1e, 0x141416); grid.position.y=0.015; scene.add(grid);
+// rug under tables
+function rug(x,z){ const m=new THREE.Mesh(new THREE.PlaneGeometry(3.2,2.2), new THREE.MeshStandardMaterial({color:0x1a1a1e, roughness:0.9})); m.rotation.x=-Math.PI/2; m.position.set(x,0.02,z); m.receiveShadow=true; scene.add(m); }
+function zoneLabel(text,x,z,color='#ffffff'){
+  const c=document.createElement('canvas'); c.width=512; c.height=128; const ctx=c.getContext('2d');
+  ctx.fillStyle=color; ctx.font='900 34px Inter'; ctx.textAlign='center'; ctx.fillText(text,256,76);
+  const tex=new THREE.CanvasTexture(c); tex.anisotropy=8;
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex, transparent:true})); spr.scale.set(3.4,0.85,1); spr.position.set(x,0.02,z); scene.add(spr);
+}
+zoneLabel('SCOUT ZONE', -10, -10); zoneLabel('DESIGN ZONE', 10, -10); zoneLabel('MARKETING', 10, 10); zoneLabel('LEAD ZONE', -10, 10);
+zoneLabel('КОНВЕЙЕР →', 0, 1.6, '#00ffa3');
+function wall(x,z,w, rot=0){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(w,3.4,0.18), new THREE.MeshStandardMaterial({color:0x1a1a1e, roughness:0.6, metalness:0.12, transparent:true, opacity:0.97}));
+  m.position.set(x,1.7,z); m.rotation.y=rot; m.castShadow=true; m.receiveShadow=true; scene.add(m);
+  const win=new THREE.Mesh(new THREE.PlaneGeometry(Math.min(w-1.2,3.2),1.5), new THREE.MeshStandardMaterial({color:0x7fb8ff, emissive:0x2a5a8a, emissiveIntensity:0.5}));
+  win.position.set(x,1.7, z+0.1); if(rot!==0) win.rotation.y=rot; scene.add(win);
+}
+wall(0,15,30); wall(0,-15,30); wall(15,0,30, Math.PI/2); wall(-15,0,30, Math.PI/2);
+const door=new THREE.Mesh(new THREE.BoxGeometry(3.2,2.3,0.2), new THREE.MeshStandardMaterial({color:0x050507})); door.position.set(0,1.15,14.9); scene.add(door);
+// shelves
+for(let x of [-13.5, 13.5]) for(let z of [-10,-5,5,10]){
+  const sh=new THREE.Mesh(new THREE.BoxGeometry(0.4,1.8,1.2), new THREE.MeshStandardMaterial({color:0x1e1e20})); sh.position.set(x,0.9,z); scene.add(sh);
+}
+
+// Conveyor GAME
+const conv=new THREE.Group(); scene.add(conv);
+const base=new THREE.Mesh(new THREE.BoxGeometry(22,0.5,1.5), new THREE.MeshStandardMaterial({color:0x1e1e20, roughness:0.7}));
+base.position.set(0,0.55,0); base.receiveShadow=true; conv.add(base);
+const belt=new THREE.Mesh(new THREE.BoxGeometry(22,0.14,1.2), new THREE.MeshStandardMaterial({color:0x2a2a2e, roughness:0.5, metalness:0.2}));
+belt.position.set(0,0.81,0); conv.add(belt);
+for(let x=-10;x<=10;x+=2){
+  const arrow=new THREE.Mesh(new THREE.ConeGeometry(0.14,0.34,3), new THREE.MeshStandardMaterial({color:0x00ffa3, emissive:0x00ffa3, emissiveIntensity:0.3}));
+  arrow.rotation.z=-Math.PI/2; arrow.position.set(x,0.95,0); conv.add(arrow);
+}
+for(let x=-10;x<=10;x+=1.8){
+  const r=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,1.35,16), new THREE.MeshStandardMaterial({color:0x333333, metalness:0.5}));
+  r.rotation.z=Math.PI/2; r.position.set(x,0.42,0); r.castShadow=true; conv.add(r);
+}
+const boxes=[];
+const boxColors=[0xe85a7a,0x7b61ff,0x00d4ff,0xffd700,0x00ffa3,0xff6b9d,0xd4af37,0xb5a0ff];
+const fileIcons=['📄','💾','🧪','🔒','🎨','⚡'];
+const fileNames=['style.css:459','app.py:108','test_agent.py:42','security.py:12','shop.html:22','turbo.py:25'];
+for(let i=0;i<12;i++){
+  const b=new THREE.Mesh(new THREE.BoxGeometry(0.58,0.58,0.58), new THREE.MeshStandardMaterial({color: boxColors[i%8], roughness:0.35, metalness:0.08}));
+  b.position.set(-9 + i*1.55, 1.15, 0); b.castShadow=true; b.receiveShadow=true; boxes.push(b); conv.add(b);
+  const c=document.createElement('canvas'); c.width=256; c.height=256; const ctx=c.getContext('2d');
+  ctx.font='80px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.clearRect(0,0,256,256); ctx.fillText(fileIcons[i%6],128,120);
+  ctx.font='700 20px JetBrains Mono'; ctx.fillStyle='#fff'; ctx.fillText(fileNames[i%6].split(':')[0].slice(0,5),128,180);
+  const tex=new THREE.CanvasTexture(c); tex.anisotropy=8;
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex})); spr.scale.set(0.62,0.62,1); spr.position.set(0,0.48,0); b.add(spr);
+  const sh=new THREE.Mesh(new THREE.CircleGeometry(0.24,12), new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.16}));
+  sh.rotation.x=-Math.PI/2; sh.position.set(0,-0.58,0); b.add(sh);
+  const lc=document.createElement('canvas'); lc.width=256; lc.height=64; const lctx=lc.getContext('2d');
+  lctx.fillStyle='rgba(255,255,255,0.92)'; lctx.fillRect(0,0,256,64); lctx.fillStyle='#0a0a0a'; lctx.font='800 12px JetBrains Mono'; lctx.textAlign='center'; lctx.fillText(fileNames[i%6],128,40);
+  const ltex=new THREE.CanvasTexture(lc); const lspr=new THREE.Sprite(new THREE.SpriteMaterial({map:ltex})); lspr.scale.set(0.75,0.18,1); lspr.position.set(0,-0.45,0); b.add(lspr);
+}
+
+// Tables & Humans — GAME LEVEL, NO COLLISION (1.8m offset)
+const AGENTS=[
+  {name:'TrendScout', color:0xe85a7a, pos:[-10.5, -6.5], icon:'🔍'},
+  {name:'DB', color:0x00d4ff, pos:[-10.5, -2.2], icon:'🗄️'},
+  {name:'Security', color:0xffd700, pos:[-10.5, 2.2], icon:'🛡️'},
+  {name:'Quality4K', color:0x00ffa3, pos:[-10.5, 6.5], icon:'✨'},
+  {name:'Design', color:0x7b61ff, pos:[10.5, -6.5], icon:'🎨'},
+  {name:'UX', color:0xff8c00, pos:[10.5, -2.2], icon:'♿'},
+  {name:'Marketer', color:0xff6b9d, pos:[10.5, 2.2], icon:'📣'},
+  {name:'Lead', color:0xffffff, pos:[10.5, 6.5], icon:'👑'},
+  {name:'Users', color:0xb5a0ff, pos:[0, -12], icon:'👥'},
+  {name:'Turbo', color:0xd4af37, pos:[0, 12], icon:'⚡'},
+];
+const humans=[];
+const tables=[];
+
+function makeTable(x,z, color, label, icon){
+  const g=new THREE.Group(); g.position.set(x,0,z);
+  rug(x,z);
+  const sh=new THREE.Mesh(new THREE.CircleGeometry(1.5,16), new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.13}));
+  sh.rotation.x=-Math.PI/2; sh.position.y=0.02; g.add(sh);
+  const top=new THREE.Mesh(new THREE.BoxGeometry(2.6,0.14,1.7), new THREE.MeshStandardMaterial({color:0x222224, roughness:0.5, metalness:0.1}));
+  top.position.y=0.78; top.castShadow=true; top.receiveShadow=true; g.add(top);
+  const edge=new THREE.Mesh(new THREE.BoxGeometry(2.62,0.05,1.72), new THREE.MeshStandardMaterial({color:0xd4af37, metalness:0.85, roughness:0.25}));
+  edge.position.y=0.86; g.add(edge);
+  for(let dx of [-1.05,1.05]) for(let dz of [-0.68,0.68]){
+    const leg=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.78,12), new THREE.MeshStandardMaterial({color:0x2a2a2e, metalness:0.5}));
+    leg.position.set(dx,0.39,dz); leg.castShadow=true; g.add(leg);
+  }
+  const comp=new THREE.Mesh(new THREE.BoxGeometry(1.1,0.68,0.08), new THREE.MeshStandardMaterial({color:0x09090a, roughness:0.2, metalness:0.25}));
+  comp.position.set(0,1.24, -0.38); comp.castShadow=true; g.add(comp);
+  const screen=new THREE.Mesh(new THREE.PlaneGeometry(0.96,0.52), new THREE.MeshBasicMaterial({color: color}));
+  screen.position.set(0,1.24, -0.33); g.add(screen);
+  const codeCanv=document.createElement('canvas'); codeCanv.width=256; codeCanv.height=128; const codeCtx=codeCanv.getContext('2d');
+  codeCtx.fillStyle='#0a0a0a'; codeCtx.fillRect(0,0,256,128);
+  codeCtx.fillStyle='#00ffa3'; codeCtx.font='600 11px JetBrains Mono';
+  for(let i=0;i<5;i++){ codeCtx.fillText('█'.repeat(8+Math.floor(Math.random()*8)), 10, 20+i*16); }
+  const codeTex=new THREE.CanvasTexture(codeCanv); const codeSpr=new THREE.Sprite(new THREE.SpriteMaterial({map:codeTex})); codeSpr.scale.set(0.85,0.42,1); codeSpr.position.set(0,1.24, -0.32); g.add(codeSpr); g.userData.codeSpr=codeSpr;
+  const progBg=new THREE.Mesh(new THREE.PlaneGeometry(1.6,0.12), new THREE.MeshBasicMaterial({color:0x1a1a1c}));
+  progBg.position.set(0,0.87,0.45); g.add(progBg);
+  const prog=new THREE.Mesh(new THREE.PlaneGeometry(1.58,0.08), new THREE.MeshBasicMaterial({color: color}));
+  prog.position.set(-0.79,0.88,0.45); prog.scale.x=0.6; g.add(prog); g.userData.prog=prog;
+  const chair=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.45,0.9), new THREE.MeshStandardMaterial({color:0x1a1a1e}));
+  chair.position.set(0,0.45,1.3); chair.castShadow=true; g.add(chair);
+  const chairBack=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.6,0.12), new THREE.MeshStandardMaterial({color:0x1a1a1e}));
+  chairBack.position.set(0,0.75,1.65); g.add(chairBack);
+  const c=document.createElement('canvas'); c.width=512; c.height=170; const ctx=c.getContext('2d');
+  ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,512,170); ctx.strokeStyle='#e8e0de'; ctx.lineWidth=6; ctx.strokeRect(6,6,500,158);
+  ctx.fillStyle='#0a0a0a'; ctx.font='900 28px Inter'; ctx.textAlign='center'; ctx.fillText(icon+'  '+label,256,66);
+  ctx.fillStyle='#666'; ctx.font='700 13px Inter'; ctx.fillText('стол '+x.toFixed(1)+','+z.toFixed(1)+' · без коллизий',256,96);
+  ctx.fillStyle='#00ffa3'; ctx.font='700 11px JetBrains Mono'; ctx.fillText('● LIVE · GAME LEVEL',256,124);
+  const tex=new THREE.CanvasTexture(c); tex.anisotropy=8;
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex})); spr.scale.set(2.0,0.66,1); spr.position.set(0,2.25,0); g.add(spr);
+  g.userData.collider={x,z, r:1.6}; // radius for collision
+  scene.add(g); tables.push(g); return g;
+}
+
+function makeHuman(color, label, icon){
+  const g=new THREE.Group();
+  const sh=new THREE.Mesh(new THREE.CircleGeometry(0.3,12), new THREE.MeshBasicMaterial({color:0x000000, transparent:true, opacity:0.22}));
+  sh.rotation.x=-Math.PI/2; sh.position.y=0.01; g.add(sh);
+  const body=new THREE.Mesh(new THREE.CapsuleGeometry(0.21,0.52,6,12), new THREE.MeshStandardMaterial({color, roughness:0.6, metalness:0.08}));
+  body.position.y=0.54; body.castShadow=true; g.add(body);
+  for(let side of [-1,1]){
+    const arm=new THREE.Mesh(new THREE.CapsuleGeometry(0.065,0.34,4,8), new THREE.MeshStandardMaterial({color, roughness:0.6}));
+    arm.position.set(side*0.27, 0.54, 0); g.add(arm); if(side===-1) g.userData.leftArm=arm; else g.userData.rightArm=arm;
+  }
+  const head=new THREE.Mesh(new THREE.SphereGeometry(0.21,20,16), new THREE.MeshStandardMaterial({color:0xffdbac, roughness:0.5}));
+  head.position.y=0.96; head.castShadow=true; g.add(head);
+  for(let ex of [-0.06,0.06]){
+    const eye=new THREE.Mesh(new THREE.SphereGeometry(0.028,8,8), new THREE.MeshStandardMaterial({color:0x0a0a0a}));
+    eye.position.set(ex,0.98,0.17); g.add(eye);
+  }
+  const hat=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.19,0.13,12), new THREE.MeshStandardMaterial({color, roughness:0.5}));
+  hat.position.y=1.1; g.add(hat);
+  const c=document.createElement('canvas'); c.width=512; c.height=96; const ctx=c.getContext('2d');
+  ctx.fillStyle='rgba(10,10,12,0.96)'; ctx.fillRect(0,0,512,96); ctx.strokeStyle='#242424'; ctx.lineWidth=3; ctx.strokeRect(2,2,508,92);
+  ctx.fillStyle='#ffffff'; ctx.font='800 22px Inter'; ctx.textAlign='center'; ctx.fillText(icon+' '+label,256,58);
+  const tex=new THREE.CanvasTexture(c); tex.anisotropy=8;
+  const spr=new THREE.Sprite(new THREE.SpriteMaterial({map:tex})); spr.scale.set(1.5,0.36,1); spr.position.set(0,1.55,0); g.add(spr);
+  const bCanv=document.createElement('canvas'); bCanv.width=560; bCanv.height=150; const bctx=bCanv.getContext('2d');
+  function drawBubble(text, sub=''){
+    bctx.clearRect(0,0,560,150);
+    bctx.fillStyle='#ffffff'; bctx.strokeStyle='#e8e0de'; bctx.lineWidth=5;
+    const r=16; bctx.beginPath(); bctx.roundRect(10,10,540,92,r); bctx.fill(); bctx.stroke();
+    bctx.beginPath(); bctx.moveTo(260,102); bctx.lineTo(280,122); bctx.lineTo(300,102); bctx.closePath(); bctx.fill(); bctx.stroke();
+    bctx.fillStyle='#0a0a0a'; bctx.font='700 16px Inter'; bctx.textAlign='center';
+    const words=text.split(' '); let line=''; let y=48;
+    for(let w of words){ const test=line+' '+w; if(bctx.measureText(test).width>460 && line){ bctx.fillText(line,280,y); line=w; y+=18; } else line=test.trim(); }
+    bctx.fillText(line,280,y);
+    if(sub){ bctx.fillStyle='#666'; bctx.font='600 11px JetBrains Mono'; bctx.fillText(sub,280,76); }
+  }
+  drawBubble('Иду к столу...','');
+  const bTex=new THREE.CanvasTexture(bCanv); const bubble=new THREE.Sprite(new THREE.SpriteMaterial({map:bTex, transparent:true, opacity:0}));
+  bubble.scale.set(2.1,0.72,1); bubble.position.set(0,2.05,0); g.add(bubble);
+  g.userData={bubble, bCanv, bctx, drawBubble, body, head, leftArm:g.userData.leftArm, rightArm:g.userData.rightArm};
+  return g;
+}
+
+AGENTS.forEach(a=>{
+  const tbl=makeTable(a.pos[0], a.pos[1], a.color, a.name, a.icon);
+  // ЧЕЛОВЕК СТОИТ СПЕРЕДИ СТОЛА, НЕ ВНУТРИ — 1.8м от центра стола
+  const side = a.pos[0] < -5 ? 1 : a.pos[0] > 5 ? -1 : (a.pos[1] < 0 ? 1 : -1);
+  // ставим спереди по Z
+  const hx = a.pos[0];
+  const hz = a.pos[1] + (a.pos[1] < 0 ? 1.9 : a.pos[1] > 5 ? -1.9 : (a.pos[0]===0 ? 1.9 : 1.9));
+  // для боковых — сдвиг по X
+  const finalX = Math.abs(a.pos[0])>8 ? hx + (a.pos[0] < 0 ? 1.9 : -1.9) : hx;
+  const finalZ = Math.abs(a.pos[0])>8 ? a.pos[1] : hz;
+  const h=makeHuman(a.color, a.name, a.icon);
+  h.position.set(finalX, 0, finalZ);
+  h.userData.home=[finalX, finalZ];
+  h.userData.target=[...h.userData.home];
+  h.userData.state='work';
+  h.userData.timer=4.0+Math.random()*3.0; // МЕДЛЕННЕЕ
+  h.userData.agent=a;
+  h.userData.table=tbl;
+  scene.add(h); humans.push(h);
+});
+
+// Controls — медленнее
+let conveyorOn=true, speed=1.0;
+window.toggleConveyor=()=>{ conveyorOn=!conveyorOn; document.getElementById('btnConv').textContent=conveyorOn?'⏸ Пауза конвейера':'▶ Запустить'; logAction('Conveyor', conveyorOn?'Запущен':'Пауза', 'move'); }
+window.speedUp=()=>{ speed = speed===1.0?1.8: speed===1.8?2.8:1.0; document.getElementById('btnSpeed').textContent='⚡ ×'+speed; document.getElementById('s-speed').textContent='⚡ ×'+speed; logAction('Turbo', 'Скорость ×'+speed, 'work'); }
+window.resetCam=()=>{ camera.position.set(18,14,18); controls.target.set(0,0,0); }
+window.highlightWork=()=>{
+  humans.forEach(h=>{ h.userData.bubble.material.opacity=1; h.userData.drawBubble('Работаю на полную!','app.py:108 — детально'); h.userData.bubble.material.map.needsUpdate=true; });
+  setTimeout(()=>humans.forEach(h=>h.userData.bubble.material.opacity=0), 4000);
+}
+addEventListener('keydown', e=>{ if(e.key==='r') resetCam(); if(e.code==='Space'){ e.preventDefault(); toggleConveyor(); }});
+
+// Tracking
+const logEl=document.getElementById('trackingLog');
+function logAction(agent, msg, level='work', file=''){
+  const time=new Date().toLocaleTimeString();
+  const colors={TrendScout:'#e85a7a', DB:'#00d4ff', Security:'#ffd700', Quality4K:'#00ffa3', Design:'#7b61ff', UX:'#ff8c00', Marketer:'#ff6b9d', Lead:'#ffffff', Users:'#b5a0ff', Turbo:'#d4af37', Conveyor:'#00ffa3', System:'#888', Code:'#7b61ff', LLM:'#b5a0ff'};
+  const fileTag = file? `<span class="log-file">${file}</span>` : '';
+  const item=document.createElement('div'); item.className='log-item '+level;
+  item.innerHTML=`<span class="log-time">${time}</span><span class="log-agent" style="color:${colors[agent]||'#fff'}">${agent}</span><span class="log-msg">${msg}</span>${fileTag}`;
+  logEl.prepend(item);
+  while(logEl.children.length>42) logEl.removeChild(logEl.lastChild);
+  document.getElementById('trackCount').textContent=logEl.children.length+' событий';
+}
+logAction('System','GAME LEVEL — 10 агентов, коллизии 1.8м, 4K тени 4096','work');
+logAction('Code','static/css/style.css:1335-1341 +6 lines','build','static/css/style.css:1335');
+logAction('Conveyor','12 коммитов: style.css:459 app.py:108','move');
+
+window.setPrompt=(t)=>{ document.getElementById('llmPrompt').value=t; };
+window.askLLM=async(apply=false)=>{
+  const prompt=document.getElementById('llmPrompt').value.trim();
+  if(!prompt) return logAction('LLM','Введи запрос — напр. "где поменял app.py:108"','work');
+  const respEl=document.getElementById('llmResponse');
+  respEl.style.display='block'; respEl.innerHTML='🤖 LLM думает...<br><span style="opacity:0.6">Анализирую '+document.getElementById('s-products').textContent+' и diff...</span>';
+  logAction('LLM','Запрос: '+prompt.slice(0,40)+' — спрашиваю LLM','work');
+  try{
+    const r=await fetch('/api/llm/ask',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt, apply})});
+    const d=await r.json();
+    if(!d.ok) throw new Error(d.error||'LLM error');
+    const mode=d.mode==='real'?'🌐 REAL LLM':'🤖 MOCK LLM';
+    let html=`<b>${mode}</b> <span style="opacity:0.6; font-size:10px">${d.time||''}</span><br><div style="margin:6px 0; padding:6px; background:#0f0f0f; border-radius:8px; border:1px solid #1e1e1e">${d.reasoning||''}</div>`;
+    html+=`<div style="margin-top:6px"><b>${d.actions?.length||0} действий:</b></div>`;
+    (d.actions||[]).forEach((a,i)=>{
+      html+=`<div style="margin:4px 0; padding:6px; background:#1a1a1c; border-left:3px solid ${a.type==='css'?'#7b61ff':a.type==='product'?'#00ffa3':'#d4af37'}; border-radius:6px"><b>${i+1}. ${a.type.toUpperCase()}</b> ${a.target} — ${a.change}<br><code style="font-size:10px; color:#00ffa3; word-break:break-all">${(a.code||'').slice(0,90)}</code><br><span style="opacity:0.6; font-size:10px">↳ ${a.why||''}</span></div>`;
+    });
+    if(apply) html+=`<div style="margin-top:6px; padding:6px; background:#00ffa3; color:#0a0a0a; border-radius:8px; font-weight:800">✓ Применено: ${(d.applied||[]).length} — обнови магазин!</div>`;
+    else html+=`<div style="margin-top:6px; font-size:10px; opacity:0.7">Нажми ✨ Применить</div>`;
+    respEl.innerHTML=html;
+    logAction('LLM',`Ответ: ${d.actions?.length||0} действий — ${d.reasoning?.slice(0,40)}`, apply?'build':'work','agents/llm_agent.py:42');
+    if(apply){ setTimeout(()=>location.reload(), 1600); }
+  }catch(e){
+    respEl.innerHTML=`<span style="color:#e85a7a">Ошибка LLM: ${e.message}</span>`;
+    logAction('LLM','Ошибка: '+e.message,'work');
+  }
+};
+
+// Poll — медленнее, детальнее
+async function poll(){
+  try{
+    const r=await fetch('/api/agents/status', {cache:'no-store'}); const d=await r.json();
+    document.getElementById('s-turbo').textContent='● TURBO #'+(d.turbo?.last||0)+' · '+d.turbo?.count;
+    document.getElementById('s-products').textContent=d.products+' товаров';
+    document.getElementById('s-orders').textContent=d.orders+' заказов';
+    document.getElementById('s-cart').textContent='🛒 '+d.cart?.count+' · €'+d.cart?.total;
+    document.getElementById('c-trend').innerHTML='<b>TrendScout</b><div class="val">'+(d.TrendScoutAgent?.top_keywords?.[0]?.[0]||'3D/motion')+'</div><div style="font-size:10px; opacity:0.65; margin-top:4px;">'+(d.TrendScoutAgent?.recommendations?.[0]?.slice(0,52)||'Сканирует Awwwards')+'</div>';
+    document.getElementById('c-design').innerHTML='<b>Design</b><div class="val">'+(d.DesignEvolverAgent?.last_variant||'midnight')+' · '+d.turbo?.count+' CSS</div>';
+    document.getElementById('c-lead').innerHTML='<b>Lead</b><div class="val">'+(d.LeadAgent?.decision?.slice(0,22)||'Go Live 17/17')+'</div>';
+    const u=d.user_tests||{}; document.getElementById('c-test').innerHTML='<b>Users 5</b><div class="val">'+(u.passed||5)+'/'+(u.tested||5)+' ✓ · корзина, оплата</div>';
+    document.getElementById('b-trend').style.width=Math.min(100, (d.turbo?.count||0)*1.3 + 30)+'%';
+    humans.forEach(h=>{
+      const a=h.userData.agent.name; let txt='Кодит...', sub='app.py:108';
+      if(a==='TrendScout') txt=d.TrendScoutAgent?.top_keywords?.[0]?.[0]||'Awwwards 3D'; sub='trend_scout.py:14';
+      if(a==='DB') txt='БД '+d.products+' тов.'; sub='lylili.db:22';
+      if(a==='Security') txt='CSP ✓'; sub='app.py:10';
+      if(a==='Quality4K') txt='4K кристально'; sub='quality_4k.py:18';
+      if(a==='Design') txt=d.DesignEvolverAgent?.last_variant||'midnight'; sub='style.css:459';
+      if(a==='Lead') txt=d.LeadAgent?.passed||'17/17'; sub='lead.py:22';
+      if(a==='Users') txt=(d.user_tests?.passed||5)+'/5'; sub='user_agents.py:22';
+      if(a==='Marketer') txt='SEO+Ads'; sub='marketer.py:14';
+      if(a==='Turbo') txt='#'+(d.turbo?.last||0); sub='turbo.py:25';
+      if(Math.random()<0.025){ // ЕЩЕ МЕДЛЕННЕЕ — 2.5%
+        h.userData.drawBubble(txt, sub); const b=h.userData.bubble; b.material.opacity=1; b.material.map.needsUpdate=true;
+        setTimeout(()=>b.material.opacity=0, 5000);
+        logAction(a, txt+' — '+sub, 'work', sub);
+      }
+    });
+    const lr=await fetch('/api/agents/logs', {cache:'no-store'}); const logs=await lr.json();
+    logs.slice(-2).forEach(l=>{
+      if(l.agent && l.msg) logAction(l.agent, l.msg.slice(0,44), (l.level||'work').toLowerCase(), l.detail?.split(' ')[0]||'');
+    });
+  }catch(e){}
+}
+setInterval(poll, 4200); poll();
+async function pollChanges(){
+  try{
+    const r=await fetch('/api/changes', {cache:'no-store'}); const ch=await r.json();
+    if(ch[0] && Math.random()<0.4) logAction('Code', ch[0].title+' — '+ch[0].diff.slice(0,36), 'code', ch[0].where+':'+(ch[0].lines||''));
+  }catch(e){}
+}
+setInterval(pollChanges, 14000); pollChanges();
+setInterval(()=>{
+  const files=['style.css:459','app.py:108','test_agent.py:42'];
+  logAction('Conveyor','Коммит '+files[Math.floor(Math.random()*files.length)]+' → деплой','move', files[0]);
+}, 8000);
+setInterval(()=>{ logAction('Turbo','Deploy '+new Date().toLocaleTimeString()+' · CSS + DB','build','turbo.py:25'); }, 30000);
+
+// Animate — GAME LEVEL, NO CLIP, SLOW DIALOGS
+let t=0;
+function isColliding(x,z){
+  for(let tbl of tables){
+    const dx=x - tbl.position.x, dz=z - tbl.position.z;
+    if(Math.hypot(dx,dz) < tbl.userData.collider.r) return true;
+  }
+  return false;
+}
+function animate(){
+  requestAnimationFrame(animate); t+=0.016*speed;
+  controls.update();
+  if(conveyorOn){
+    boxes.forEach((b,i)=>{
+      b.position.x += 0.02*speed;
+      if(b.position.x>10) b.position.x=-10;
+      b.rotation.y += 0.012*speed;
+      b.position.y = 1.15 + Math.sin(t*1.8 + i)*0.04;
+    });
+  }
+  humans.forEach((h,i)=>{
+    h.userData.timer -= 0.016;
+    if(h.userData.timer<=0){
+      const isHome = Math.hypot(h.position.x - h.userData.home[0], h.position.z - h.userData.home[1])<0.9;
+      if(isHome && Math.random()<0.55){
+        // цель — конвейер, но с проверкой коллизии
+        let tx=(Math.random()-0.5)*1.2, tz=0;
+        if(!isColliding(tx,tz)){
+          h.userData.target=[tx,tz];
+          h.userData.state='go_conveyor';
+          logAction(h.userData.agent.name, 'Иду за коммитом '+['style.css:459','app.py:108'][i%2],'move','conveyor');
+        }
+      } else {
+        h.userData.target=[...h.userData.home];
+        h.userData.state='go_home';
+        if(h.userData.carry) logAction(h.userData.agent.name, 'Несу diff → стол (1.8м)','move', h.userData.table.position.x.toFixed(1)+','+h.userData.table.position.z.toFixed(1));
+        else logAction(h.userData.agent.name, 'Возвращаюсь кодить — стол свободен','work', 'app.py:108');
+      }
+      h.userData.timer=4.5+Math.random()*4.0; // МЕДЛЕННЕЕ
+    }
+    const tx=h.userData.target[0], tz=h.userData.target[1];
+    // проверка коллизии перед шагом
+    let nx = h.position.x + (tx - h.position.x)*0.06*speed;
+    let nz = h.position.z + (tz - h.position.z)*0.06*speed;
+    if(isColliding(nx, nz)){
+      // обход — сдвиг вбок
+      nx += (Math.random()-0.5)*0.6;
+      nz += (Math.random()-0.5)*0.6;
+    }
+    const dx=nx - h.position.x, dz=nz - h.position.z;
+    const dist=Math.hypot(tx - h.position.x, tz - h.position.z);
+    if(dist>0.08){
+      h.position.x += dx*0.9;
+      h.position.z += dz*0.9;
+      h.rotation.y = Math.atan2(dx,dz);
+      h.position.y = Math.abs(Math.sin(t*7 + i))*0.08;
+      if(h.userData.leftArm) h.userData.leftArm.rotation.x = Math.sin(t*7+i)*0.5;
+      if(h.userData.rightArm) h.userData.rightArm.rotation.x = Math.sin(t*7+i+Math.PI)*0.5;
+    } else {
+      h.position.y=0;
+      if(h.userData.leftArm) h.userData.leftArm.rotation.x=0;
+      if(h.userData.rightArm) h.userData.rightArm.rotation.x=0;
+      h.rotation.y += Math.sin(t*1.2+i)*0.008;
+      if(h.userData.state==='work' && Math.random()<0.02){
+        h.userData.leftArm.rotation.x = -0.35; h.userData.rightArm.rotation.x = -0.35;
+      }
+    }
+    if(h.userData.state==='go_conveyor' && dist<0.45 && !h.userData.carryMesh){
+      const cb=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.34,0.34), new THREE.MeshStandardMaterial({color: h.children[1].material.color}));
+      cb.position.set(0,0.58,0.3); cb.castShadow=true; h.add(cb); h.userData.carryMesh=cb; h.userData.carry=true;
+      logAction(h.userData.agent.name, 'Взял коммит — мердж file:line','move','app.py:108');
+    }
+    if(h.userData.state==='go_home' && dist<0.35 && h.userData.carryMesh){
+      h.remove(h.userData.carryMesh); h.userData.carryMesh=null; h.userData.carry=false;
+      logAction(h.userData.agent.name, 'Закоммитил static/css/style.css:1335 — push','build','style.css:1335');
+      const tbl=h.userData.table; if(tbl) tbl.children[2].material.emissiveIntensity=0.85; setTimeout(()=>{ if(tbl) tbl.children[2].material.emissiveIntensity=0.25; }, 600);
+    }
+  });
+  renderer.render(scene, camera);
+}
+animate();
+
+renderer.domElement.addEventListener('click', e=>{
+  const ray=new THREE.Raycaster(); const m=new THREE.Vector2((e.clientX/innerWidth)*2-1, -(e.clientY/innerHeight)*2+1);
+  ray.setFromCamera(m,camera); const hits=ray.intersectObjects(humans,true);
+  if(hits.length){ const h=hits[0].object.parent; if(h.userData.agent){ controls.target.copy(h.position); logAction(h.userData.agent.name, 'Фокус — смотрю file:line','work', h.userData.table.position.x.toFixed(1)); } }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "2560px container 1600px",
+    "3840px container 1800px",
+    "retina 2x border 0.5px",
+    "crisp-edges + antialiased",
+    "gift-stage 340px on 4K",
+    "will-change transform for GPU"
+  ],
+  "fixes": [
+    "chat_widget.html: preconnect for 4K fonts"
+  ]
+}

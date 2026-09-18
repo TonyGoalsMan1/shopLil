@@ -1,0 +1,14 @@
+{
+  "welcome": {
+    "subject": "Добро пожаловать в LYLILI 🩷 — твой подарок внутри",
+    "body": "Привет! Твой первый gift — скидка 10% PROMO: LYLILI10. Открой https://lylili.love/ — подарки как в Telegram уже ждут."
+  },
+  "abandoned_cart": {
+    "subject": "Твоя корзина скучает 🎁",
+    "body": "Ты оставила подарки в корзине — вернись и получи free доставку! https://lylili.love/cart"
+  },
+  "new_drop": {
+    "subject": "Новый дроп: Unicorn Aurora 🦄 — 59€ legendary",
+    "body": "Только 500 штук. 3D подиум, голографик. Успей! https://lylili.love/"
+  }
+}

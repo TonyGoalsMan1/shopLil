@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+*.db
+*.log
+.DS_Store
+.idea/
+.vscode/
+agents/memory/*.jsonl
+agents/memory/backups/
+lylili.db
+*.bak
