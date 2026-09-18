@@ -1,7 +1,7 @@
 {
   "shop_status": 200,
   "has_gifts": true,
-  "has_unicorn": true,
+  "has_unicorn": false,
   "about_status": 200,
   "api_cart": {
     "cart": {},
@@ -15,12 +15,12 @@
     "X-Content-Type-Options": "nosniff"
   },
   "has_security_headers": true,
-  "response_ms": 7,
+  "response_ms": 25,
   "perf_ok": true,
   "has_4k": true,
   "has_min": true,
   "db_exists": true,
-  "db_products": 12,
+  "db_products": 5,
   "db_integrity": "ok",
   "passed": true
 }

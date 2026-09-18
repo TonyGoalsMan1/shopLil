@@ -1,159 +1,151 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shop — LYLILI Telegram Gifts</title>
-  <meta property="og:title" content="LYLILI Telegram Gifts — Premium 4K">
-  <meta property="og:description" content="Коллекционные подарки как в Telegram, 3D подиум, 4K качество, worldwide">
-  <meta property="og:image" content="/static/img/og.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <meta name="description" content="LYLILI Telegram Gifts — collectible 3D animated gifts, limited 2026">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ turbo.count if turbo else 0 }}">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop — LYLILI.love REAL</title>
+<meta property="og:title" content="LYLILI Real Shop — Premium 4K">
+<meta property="og:description" content="Реальная одежда как на lylili.love/shop — 5 цветов, видео с YouTube">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="description" content="LYLILI real clothing — как на lylili.love">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ turbo.count if turbo else 0 }}">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 </head>
 <body>
 <div id="liveBadge" style="position:fixed; top:78px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#0f0f0f,#2a2a2a); color:#fff; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:800; z-index:90; box-shadow:0 8px 24px rgba(0,0,0,0.2); display:flex; gap:8px; align-items:center; border:1px solid #333;">
-  <span style="width:8px; height:8px; background:#00ffa3; border-radius:50%; box-shadow:0 0 8px #00ffa3; animation:blink 1s infinite;"></span>
-  LIVE TURBO #{{ turbo.last if turbo else 0 }} · {{ turbo.count if turbo else 0 }} обновлений · <span id="liveTime">{{ turbo.ts if turbo else '' }}</span> · Авто-обновление каждые 25с
-  <button onclick="location.reload()" style="margin-left:8px; background:#00ffa3; color:#0f0f0f; border:none; padding:4px 10px; border-radius:999px; font-weight:800; cursor:pointer;">Обновить</button>
+<span style="width:8px; height:8px; background:#00ffa3; border-radius:50%; box-shadow:0 0 8px #00ffa3; animation:blink 1s infinite;"></span>
+LIVE TURBO #{{ turbo.last if turbo else 0 }} · REAL CLOTHING · <span id="liveTime">{{ turbo.ts if turbo else '' }}</span>
+<button aria-label="action" onclick="location.reload()" style="margin-left:8px; background:#00ffa3; color:#0f0f0f; border:none; padding:4px 10px; border-radius:999px; font-weight:800; cursor:pointer;">Обновить</button>
 </div>
 <header class="header" style="margin-top:38px;">
-  <div class="container header-inner">
-    <a href="/" class="logo">LYLILI<span>LOVE · GIFT EDITION</span></a>
-    <nav class="nav">
-      <a href="/about">{{ t.about }}</a>
-      <a href="/" class="active">{{ t.shop }}</a>
-      <a href="/cart">{{ t.cart }}</a>
-    </nav>
-    <div class="header-right">
-      <a href="/cart" class="cart-btn">🛒 <span class="cart-total">€{{ cart_total }}.00</span> <span class="cart-count" id="cartCount">{{ cart_count }}</span></a>
-      <div class="langs">
-        <span onclick="setLang('en')" data-lang="en" class="{{ 'active' if lang=='en' else '' }}" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='en' else 'opacity:0.5;' }}">🇬🇧</span>
-        <span onclick="setLang('de')" data-lang="de" class="{{ 'active' if lang=='de' else '' }}" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='de' else 'opacity:0.5;' }}">🇩🇪</span>
-        <span onclick="setLang('fr')" data-lang="fr" class="{{ 'active' if lang=='fr' else '' }}" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='fr' else 'opacity:0.5;' }}">🇫🇷</span>
-        <span onclick="setLang('ru')" data-lang="ru" class="{{ 'active' if lang=='ru' else '' }}" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='ru' else 'opacity:0.5;' }}">🇷🇺</span>
-      </div>
-      <div class="hamburger">☰</div>
-    </div>
-  </div>
+<div class="container header-inner">
+<a href="/" class="logo">LYLILI<span>LOVE · REAL</span></a>
+<nav class="nav">
+<a href="/about">{{ t.about }}</a>
+<a href="/" class="active">{{ t.shop }}</a>
+<a href="/cart">{{ t.cart }}</a>
+<a href="/contact-us">Contact</a>
+</nav>
+<div class="header-right">
+<a href="/cart" class="cart-btn">🛒 €{{ cart_total }}.00 <span class="cart-count" id="cartCount">{{ cart_count }}</span></a>
+<div class="langs">
+<span onclick="setLang('en')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='en' else 'opacity:0.5;' }}">🇬🇧</span>
+<span onclick="setLang('de')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='de' else 'opacity:0.5;' }}">🇩🇪</span>
+<span onclick="setLang('fr')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='fr' else 'opacity:0.5;' }}">🇫🇷</span>
+<span onclick="setLang('ru')" style="cursor:pointer; {{ 'opacity:1; border-bottom:2px solid #d4af37;' if lang=='ru' else 'opacity:0.5;' }}">🇷🇺</span>
+</div>
+<div class="hamburger">☰</div>
+</div>
+</div>
 </header>
 
-<div class="container shop-hero">
-  <h1>{{ t.hero_title }}</h1>
-  <p style="color:#888; max-width:620px; margin:6px auto 0;">{{ t.hero_sub }}</p>
-  <div style="display:flex; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap;">
-    <span style="background:#0f0f0f; color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:800; letter-spacing:0.5px;">✨ {{ t.collectible }}</span>
-    <span style="background:linear-gradient(135deg,#ff6b8a,#ffb3c6); color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:800;">{{ t.animated }}</span>
-    <span style="background:#fff; border:1px solid #f0e6e0; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:700;">{{ t.limited }}</span>
-  </div>
-  <div class="filters">
-    <button aria-label="action" class="filter-btn active" data-filter="all" onclick="filterShop('all')">{{ t.all }}</button>
-    <button aria-label="action" class="filter-btn" data-filter="rare" onclick="filterShop('rare')">{{ t.rare }}</button>
-    <button aria-label="action" class="filter-btn" data-filter="epic" onclick="filterShop('epic')">{{ t.epic }}</button>
-    <button aria-label="action" class="filter-btn" data-filter="legendary" onclick="filterShop('legendary')">{{ t.legendary }}</button>
-  </div>
+<div class="container shop-hero" style="padding-bottom:0;">
+<h1>LYLILI SHOP — REAL</h1>
+<p style="color:#888; max-width:640px; margin:6px auto 0;">Как на <a href="https://www.lylili.love/shop/" target="_blank" style="color:#e85a7a;">lylili.love/shop</a> — 5 реальных цветов шорт с фото и видео. Нажми карточку — откроется страница товара с видео YouTube.</p>
+<div style="display:flex; justify-content:center; gap:8px; margin-top:14px; flex-wrap:wrap;">
+<span style="background:#0f0f0f; color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:800;">👗 REAL LINEN</span>
+<span style="background:linear-gradient(135deg,#4a90e2,#b8a99a); color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:800;">5 ЦВЕТОВ</span>
+<span style="background:#fff; border:1px solid #f0e6e0; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:700;">▶ ВИДЕО</span>
+</div>
+<div class="filters">
+<button aria-label="action" class="filter-btn active" data-filter="all" onclick="filterShop('all')">{{ t.all }}</button>
+<button aria-label="action" class="filter-btn" data-filter="rare" onclick="filterShop('rare')">{{ t.rare }}</button>
+<button aria-label="action" class="filter-btn" data-filter="epic" onclick="filterShop('epic')">{{ t.epic }}</button>
+<button aria-label="action" class="filter-btn" data-filter="legendary" onclick="filterShop('legendary')">{{ t.legendary }}</button>
+</div>
 </div>
 
 <div class="container grid">
-  {% for p in products %}
-  {% set rarity = 'rare' if p.id in [3,4] else 'legendary' if p.id in [2,6] else 'epic' %}
-  {% set bg1 = '#ff8fab' if p.id==1 else '#ff6b8a' if p.id==2 else '#ffe8a3' if p.id==3 else '#ffb8e0' if p.id==4 else '#7fb8ff' if p.id==5 else '#ff7a9e' %}
-  {% set bg2 = '#ffb3c6' if p.id==1 else '#8a2be2' if p.id==2 else '#ffd1a3' if p.id==3 else '#8a4dff' if p.id==4 else '#4facfe' if p.id==5 else '#d64a6a' %}
-  <div class="gift-card" data-cat="{{ rarity }}" style="--gift-bg1: {{ bg1 }}; --gift-bg2: {{ bg2 }};" onclick="openGift(this, {{ p.id }})">
-    <div class="gift-stage">
-      <div class="gift-glow"></div>
-      <div class="gift-pattern"></div>
-      <!-- sparkles -->
-      <div class="sparkle" style="top:22%; left:18%; animation-delay:0s;"></div>
-      <div class="sparkle" style="top:30%; right:16%; animation-delay:0.6s; width:4px; height:4px;"></div>
-      <div class="sparkle" style="bottom:38%; left:22%; animation-delay:1.1s; width:5px; height:5px;"></div>
-      <div class="sparkle" style="top:18%; right:28%; animation-delay:0.3s; width:3px; height:3px;"></div>
-      {% if rarity=='legendary' %}
-        <div class="gift-badge legendary"><span class="dot"></span> LEGENDARY</div>
-      {% elif rarity=='epic' %}
-        <div class="gift-badge rare">⭐ EPIC</div>
-      {% else %}
-        <div class="gift-badge limited">RARE</div>
-      {% endif %}
-      <div class="gift-top-right">#{{ 1000 + p.id }} · {{ rarity|upper }}</div>
-      <div class="gift-emoji-wrap">{{ p.emoji }}</div>
-      <div class="gift-pedestal"></div>
-      <div class="gift-shine"></div>
-    </div>
-    <div class="gift-info">
-      <h3>{{ p.name }}</h3>
-      <div class="desc">{{ p.desc }} · Collectible Gift</div>
-      <div class="gift-attrs">
-        <span class="attr rarity">✨ {{ rarity }}</span>
-        <span class="attr">🎁 Gift #{{ p.id }}</span>
-        <span class="attr">💎 {{ '2.5k' if rarity=='legendary' else '1.2k' if rarity=='epic' else '800' }} {{ t.owners }}</span>
-      </div>
-      <div class="gift-meta">
-        <div class="gift-price">€{{ p.price }} <small>€{{ p.price + 18 }}</small></div>
-        <div style="font-size:11px; color:#888; font-weight:700;">TON · Stars</div>
-      </div>
-      <div class="gift-actions">
-        <button aria-label="action" class="btn" onclick="event.stopPropagation(); addToCart({{ p.id }}, this)"><span>🎁</span> {{ t.send_gift }}</button>
-        <button aria-label="action" class="btn btn-ghost" onclick="event.stopPropagation(); openGift(this.closest('.gift-card'), {{ p.id }}, true)">{{ t.preview }}</button>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+{% for p in products %}
+{% set rarity = p.rarity %}
+<div class="gift-card" data-cat="{{ rarity }}" onclick="location.href='/product/{{ p.id }}'" style="cursor:pointer;">
+<div class="gift-stage" style="height:320px; background:#fff; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center;">
+<img src="{{ p.image }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;">
+<div class="gift-badge legendary" style="background:rgba(15,15,15,0.88); backdrop-filter:blur(6px);">{{ rarity|upper }} · REAL</div>
+<div class="gift-top-right" style="background:rgba(255,255,255,0.96); color:#0f0f0f; border:1px solid #f0e6e0;">€{{ p.price }}</div>
+<div style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.75); color:#fff; padding:6px 10px; border-radius:999px; font-size:10px; font-weight:700; display:flex; gap:6px; align-items:center;"><span style="width:8px; height:8px; background:#ff0000; border-radius:50%;"></span> ▶ Видео</div>
+<div class="gift-shine"></div>
+</div>
+<div class="gift-info">
+<h3>{{ p.name }}</h3>
+<div class="desc">{{ p.desc }} · <span style="color:#d4af37; font-weight:700;">Real linen — как на сайте</span></div>
+<div class="gift-attrs">
+<span class="attr rarity">✨ {{ rarity }}</span>
+<span class="attr">👗 {{ p.name.split(' ')[-1] }}</span>
+<span class="attr">💎 {{ p.owners }} owners</span>
+</div>
+<div class="gift-meta">
+<div class="gift-price">€{{ p.price }} <small>€{{ p.price+18 }}</small></div>
+<div style="font-size:11px; color:#888; font-weight:700;">▶ YouTube</div>
+</div>
+<div class="gift-actions">
+<button aria-label="action" class="btn" onclick="event.stopPropagation(); addToCart({{ p.id }}, this)"><span>🛒</span> {{ t.send_gift }}</button>
+<a href="/product/{{ p.id }}" class="btn btn-ghost" onclick="event.stopPropagation()" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">👁️ Открыть</a>
+</div>
+</div>
+</div>
+{% endfor %}
 </div>
 
-<div class="container" style="text-align:center; padding:0 0 48px;">
-  <div style="display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-    <a href="/cart" class="btn">{{ t.open_cart }} →</a>
-    <a href="/about" class="btn btn-outline">{{ t.our_story }}</a>
-  </div>
-  <p style="color:#888; font-size:12px; margin-top:12px;">Как в Telegram: подарки можно дарить, они анимированы и светятся на твоём профиле</p>
+<div class="container" style="max-width:900px; margin:20px auto;">
+<div style="background:#0f0f0f; border-radius:16px; overflow:hidden; border:1px solid #1e1e1e;">
+<div style="padding:12px 16px; background:#1a1a1a; color:#fff; font-weight:800; font-size:12px; letter-spacing:1px; display:flex; justify-content:space-between;"><span>▶ ВИДЕО LYLILI — подтягивается с YouTube @LYLILIlove</span><a href="https://www.youtube.com/@LYLILIlove" target="_blank" style="color:#00ffa3; font-size:11px;">Открыть канал →</a></div>
+<div style="aspect-ratio:16/9; background:#000;">
+<iframe width="100%" height="100%" src="https://www.youtube.com/embed/9bZkp7q19f0?rel=0&modestbranding=1" title="LYLILI video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%; border:0;"></iframe>
+</div>
+<div style="padding:10px 14px; font-size:11px; color:#aaa; display:flex; gap:12px; flex-wrap:wrap; background:#0f0f0f;">
+<a href="https://www.youtube.com/@LYLILIlove" target="_blank" style="color:#00ffa3;">YouTube @LYLILIlove</a>
+<a href="https://www.instagram.com/lylili.love" target="_blank" style="color:#e85a7a;">Instagram @lylili.love</a>
+<a href="https://www.lylili.love/shop/" target="_blank" style="color:#888;">Оригинал lylili.love/shop</a>
+<a href="/about" style="color:#888;">About</a>
+<a href="/contact-us" style="color:#888;">Contact Us</a>
+</div>
+</div>
 </div>
 
-<footer class="footer">
-  <div class="container"><div class="copy"><span>© 2026 LYLILI Telegram Gift Edition</span><span>Collectible · Animated · 3D</span></div></div>
-</footer>
+<div class="container" style="text-align:center; padding:0 0 32px;">
+<div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+<a href="/cart" class="btn">{{ t.open_cart }} →</a>
+<a href="/about" class="btn btn-outline">{{ t.our_story }}</a>
+</div>
+<p style="color:#888; font-size:11px; margin-top:12px;">Страницы как на lylili.love: <a href="/about" style="color:#e85a7a;">About</a> · <a href="/contact-us" style="color:#e85a7a;">Contact</a> · <a href="/data-protection">Data protection</a> · <a href="/imprint">Imprint</a> · <a href="/shipping-terms">Shipping</a></p>
+</div>
+
+<footer class="footer"><div class="container"><div class="copy"><span>© 2026 LYLILI.love — real shop · Видео с YouTube</span><span><a href="https://www.lylili.love/shop/" target="_blank" style="color:#777;">Оригинал</a></span></div></div></footer>
 <div id="toast" class="toast"></div>
 {% include "chat_widget.html" %}
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 <script>
-// LIVE AUTO-RELOAD — безостановочные изменения видны сразу
 let currentTurbo = {{ turbo.count if turbo else 0 }};
 setInterval(async ()=>{
   try{
     const r = await fetch('/api/version', {cache:'no-store'});
     const d = await r.json();
     if(d.count !== currentTurbo){
-      document.getElementById('liveBadge').innerHTML = '<span style="width:8px; height:8px; background:#00ffa3; border-radius:50%; box-shadow:0 0 8px #00ffa3;"></span> ОБНОВЛЕНИЕ #'+d.count+' — перезагружаю…';
-      // bust CSS cache
+      document.getElementById('liveBadge').innerHTML = '<span style="width:8px; height:8px; background:#00ffa3; border-radius:50%;"></span> ОБНОВЛЕНИЕ #'+d.count+' — перезагружаю…';
       const link = document.querySelector('link[href*=\"style.css\"]');
       if(link) link.href = link.href.split('?')[0] + '?v=' + d.count + '&t=' + Date.now();
-      setTimeout(()=> location.reload(), 900);
+      setTimeout(()=> location.reload(), 800);
     }
   }catch(e){}
 }, 8000);
 setInterval(()=>{ const el=document.getElementById('liveTime'); if(el) el.textContent=new Date().toLocaleTimeString(); }, 1000);
-</script>
-<script>
 function openGift(card, id, isPreview=false){
   card.classList.add('opening');
-  // confetti like Telegram gift unpack
-  for(let i=0;i<18;i++){
-    const c=document.createElement('div');
-    c.className='confetti';
+  for(let i=0;i<14;i++){
+    const c=document.createElement('div'); c.className='confetti';
     const rect=card.getBoundingClientRect();
     c.style.left=(rect.left+rect.width/2 + (Math.random()-0.5)*80)+'px';
     c.style.top=(rect.top+rect.height*0.4)+'px';
     c.style.background=['#e85a7a','#ffb3c6','#ffd700','#7b61ff','#4facfe'][Math.floor(Math.random()*5)];
-    c.style.transform=`rotate(${Math.random()*360}deg)`;
-    document.body.appendChild(c);
-    const dx=(Math.random()-0.5)*260, dy=Math.random()*200+120;
-    c.animate([{transform:'translate(0,0) rotate(0deg)', opacity:1},{transform:`translate(${dx}px, ${dy}px) rotate(${720}deg)`, opacity:0}],{duration:900+Math.random()*500, easing:'cubic-bezier(0.25,1,0.5,1)'}).onfinish=()=>c.remove();
+    c.style.transform=`rotate(${Math.random()*360}deg)`; document.body.appendChild(c);
+    const dx=(Math.random()-0.5)*220, dy=Math.random()*200+120;
+    c.animate([{transform:'translate(0,0) rotate(0deg)', opacity:1},{transform:`translate(${dx}px, ${dy}px) rotate(${720}deg)`, opacity:0}],{duration:800+Math.random()*400, easing:'cubic-bezier(0.25,1,0.5,1)'}).onfinish=()=>c.remove();
   }
   setTimeout(()=>card.classList.remove('opening'),700);
-  if(!isPreview) showToast('🎁 Подарок открыт! Анимация как в Telegram');
+  if(!isPreview) showToast('🎁 Открыто — реальная одежда!');
 }
 async function setLang(lang){
   await fetch('/api/lang',{method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({lang})});

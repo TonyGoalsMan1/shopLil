@@ -9,21 +9,22 @@
   ],
   "ideas": [
     {
-      "emoji": "🔮",
-      "name": "Crystal Ball — Mystic",
-      "desc": "Predicts your vibe",
+      "emoji": "🦄",
+      "name": "Unicorn — Aurora",
+      "desc": "Holo finish · Ultra rare",
+      "rarity": "legendary",
       "colors": [
-        "#c084fc",
+        "#ff8fab",
         "#7b61ff"
       ]
     },
     {
-      "emoji": "👑",
-      "name": "Crown — Royal",
-      "desc": "Gold plated · 1 of 500",
+      "emoji": "🍒",
+      "name": "Cherry — Sweet",
+      "desc": "Candy coated",
       "colors": [
-        "#ffd700",
-        "#ff8c00"
+        "#ff4d6d",
+        "#ff8fab"
       ]
     }
   ],

@@ -18,7 +18,8 @@ SECURITY_HEADERS = {
 @app.after_request
 def add_security_headers(resp):
     for k,v in SECURITY_HEADERS.items():
-        resp.headers[k]=v
+        resp.headers[k    {"id": 7, "name": "Unicorn — Aurora", "price": 59, "emoji": "🦄", "color": "#ff8fab", "desc": "Holo finish · Ultra rare"},
+]=v
     return resp
 
 _rate = defaultdict(list)
@@ -58,27 +59,37 @@ def get_t():
     return TRANSLATIONS[get_lang()]
 
 FALLBACK_PRODUCTS = [
-    {"id": 1, "name": "Flirty Shorts — Pink", "price": 49, "emoji": "🩷", "color": "#ffb3c6", "desc": "Mischievous & flirty", "rarity":"epic", "owners":1240},
-    {"id": 2, "name": "Mischievous — Red", "price": 49, "emoji": "💃", "color": "#ff6b8a", "desc": "Bold & playful", "rarity":"legendary", "owners":2500},
-    {"id": 3, "name": "Cheerful — Cream", "price": 45, "emoji": "✨", "color": "#fff2cc", "desc": "Light & airy", "rarity":"rare", "owners":800},
-    {"id": 4, "name": "Spring — Pastel", "price": 47, "emoji": "🌸", "color": "#ffd6e7", "desc": "Soft spring vibes", "rarity":"rare", "owners":900},
-    {"id": 5, "name": "Freedom — Sky", "price": 49, "emoji": "🦋", "color": "#b5e6ff", "desc": "Open & free", "rarity":"rare", "owners":1100},
-    {"id": 6, "name": "Sweet — Berry", "price": 52, "emoji": "🍓", "color": "#ff8fab", "desc": "Sweet adventure", "rarity":"legendary", "owners":2100},
-    {"id": 7, "name": "Unicorn — Aurora", "price": 59, "emoji": "🦄", "color": "#ff8fab", "desc": "Holo finish · Ultra rare", "rarity":"legendary", "owners":500},
-    {"id": 8, "name": "Diamond — Prism", "price": 89, "emoji": "💎", "color": "#b5e6ff", "desc": "Prism refraction · Premium", "rarity":"legendary", "owners":300},
+    {"id": 1, "name": "LYLILI in blue", "price": 59, "emoji": "🩵", "color": "#4a90e2", "desc": "LYLILI shorts in blue - linen trend", "rarity":"epic", "owners":1240, "image":"https://www.lylili.love/wp-content/uploads/2023/09/LYLILI-shorts-skirt-buy-blue-kaufen-blau-trend-red-linen-2.jpg-2-1024x1024.jpg", "video":"https://www.youtube.com/embed/9bZkp7q19f0"},
+    {"id": 2, "name": "LYLILI in taupe", "price": 59, "emoji": "🤎", "color": "#b8a99a", "desc": "LYLILI shorts in taupe", "rarity":"rare", "owners":800, "image":"https://www.lylili.love/wp-content/uploads/2023/09/LYLILI-shorts-skirt-buy-taupe-kaufen-trend-red-linen-2.jpg-2-1024x1024.jpg", "video":"https://www.youtube.com/embed/9bZkp7q19f0"},
+    {"id": 3, "name": "LYLILI in black", "price": 59, "emoji": "🖤", "color": "#1a1a1a", "desc": "LYLILI shorts in black", "rarity":"legendary", "owners":1500, "image":"https://www.lylili.love/wp-content/uploads/2023/09/LYLILI-shorts-skirt-buy-black-kaufen-schwarz-trend-red-linen-3.jpg-3-1024x1024.jpg", "video":"https://www.youtube.com/embed/9bZkp7q19f0"},
+    {"id": 4, "name": "LYLILI in brown", "price": 59, "emoji": "🤎", "color": "#8b6f47", "desc": "LYLILI shorts in brown", "rarity":"rare", "owners":900, "image":"https://www.lylili.love/wp-content/uploads/2023/09/LYLILI-shorts-skirt-buy-broun-kaufen-braun-trend-red-linen-2.jpg-2-1024x1024.jpg", "video":"https://www.youtube.com/embed/9bZkp7q19f0"},
+    {"id": 5, "name": "LYLILI in white", "price": 59, "emoji": "🤍", "color": "#f5f5f5", "desc": "LYLILI shorts in white", "rarity":"epic", "owners":1100, "image":"https://www.lylili.love/wp-content/uploads/2023/09/LYLILI-shorts-skirt-buy-white-kaufen-weiß-trend-red-linen-2-1024x1024.jpg", "video":"https://www.youtube.com/embed/9bZkp7q19f0"},
+    {"id": 6, "name": "LYLILI in red linen", "price": 62, "emoji": "❤️", "color": "#c41e3a", "desc": "Red linen edition", "rarity":"legendary", "owners":600, "image":"https://www.lylili.love/wp-content/uploads/2023/09/LYLILI-shorts-skirt-buy-blue-kaufen-blau-trend-red-linen-2.jpg-2-1024x1024.jpg", "video":"https://www.youtube.com/embed/9bZkp7q19f0"},
 ]
 
 def get_products():
-    # динамически из БД, чтобы новое появлялось сразу без рестарта
     p = Path(__file__).parent / "lylili.db"
     if p.exists():
         try:
             con = sqlite3.connect(p)
             con.row_factory = sqlite3.Row
-            rows = con.execute("SELECT id,name,price,emoji,color,desc,rarity,owners FROM products ORDER BY id").fetchall()
+            # try with image/video, fallback without
+            try:
+                rows = con.execute("SELECT id,name,price,emoji,color,desc,rarity,owners,image,video FROM products ORDER BY id").fetchall()
+            except:
+                rows = con.execute("SELECT id,name,price,emoji,color,desc,rarity,owners FROM products ORDER BY id").fetchall()
             con.close()
             if rows:
-                return [dict(r) for r in rows]
+                res=[]
+                for r in rows:
+                    d=dict(r)
+                    if not d.get("image"):
+                        fb=next((x for x in FALLBACK_PRODUCTS if x["id"]==d["id"]), None)
+                        if fb:
+                            d["image"]=fb.get("image")
+                            d["video"]=fb.get("video")
+                    res.append(d)
+                return res
         except: pass
     return FALLBACK_PRODUCTS
 
@@ -268,6 +279,40 @@ def checkout_page():
             items.append({**p, "qty": qty, "subtotal": p['price']*qty})
     total, count = cart_total()
     return render_template('checkout.html', items=items, total=total, count=count, lang=get_lang(), t=get_t())
+
+@app.route('/product/<int:pid>')
+def product_page(pid):
+    prod = next((x for x in get_products() if x["id"]==pid), None)
+    if not prod:
+        return redirect("/")
+    total,count = cart_total()
+    return render_template('product.html', product=prod, products=get_products(), cart_total=total, cart_count=count, turbo=get_turbo_info(), lang=get_lang(), t=get_t())
+
+@app.route('/contact-us')
+@app.route('/contact')
+def contact_page():
+    return render_template('contact.html', cart_total=cart_total()[0], cart_count=cart_total()[1], turbo=get_turbo_info(), lang=get_lang(), t=get_t())
+
+@app.route('/data-protection')
+def data_protection_page():
+    return render_template('legal.html', title="Data protection", content="LYLILI.love data protection — GDPR compliant. Email: help@lylili.love. Your data is secure with 256-bit SSL.", turbo=get_turbo_info(), lang=get_lang(), t=get_t())
+
+@app.route('/imprint')
+def imprint_page():
+    return render_template('legal.html', title="Imprint", content="LYLILI.love · LYLILI shorts · Contact: help@lylili.love · Instagram @lylili.love · YouTube @LYLILIlove", turbo=get_turbo_info(), lang=get_lang(), t=get_t())
+
+@app.route('/terms-and-conditions-and-customer-information')
+@app.route('/terms')
+def terms_page():
+    return render_template('legal.html', title="Terms and conditions", content="Terms: Worldwide shipping 5-12 days, returns 14 days, secure payments via Visa/MC/TON.", turbo=get_turbo_info(), lang=get_lang(), t=get_t())
+
+@app.route('/right-of-withdrawal')
+def withdrawal_page():
+    return render_template('legal.html', title="Right of withdrawal", content="You have 14 days to withdraw. Contact help@lylili.love", turbo=get_turbo_info(), lang=get_lang(), t=get_t())
+
+@app.route('/shipping-terms')
+def shipping_page():
+    return render_template('legal.html', title="Shipping terms", content="Shipping worldwide, free over €100, tracked 5-12 days.", turbo=get_turbo_info(), lang=get_lang(), t=get_t())
 
 @app.route('/success/<order_id>')
 def success_page(order_id):

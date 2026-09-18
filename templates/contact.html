@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact Us — LYLILI.love</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ turbo.count if turbo else 0 }}">
+</head>
+<body>
+<header class="header"><div class="container header-inner"><a href="/" class="logo">LYLILI<span>LOVE</span></a><nav class="nav"><a href="/about">{{ t.about }}</a><a href="/" >{{ t.shop }}</a><a href="/contact-us" class="active">Contact</a></nav><div class="header-right"><a href="/cart" class="cart-btn">🛒 €{{ cart_total }}.00 <span class="cart-count">{{ cart_count }}</span></a></div></div></header>
+<div class="container" style="max-width:800px; padding:40px 24px;">
+  <h1 style="font-family:'Playfair Display',serif; font-size:36px; text-align:center;">Contact Us</h1>
+  <p style="text-align:center; color:#888; margin:8px 0 24px;">Как на lylili.love/contact-us — пиши нам</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+    <form onsubmit="event.preventDefault(); showToast('Сообщение отправлено! Мы ответим на email.'); this.reset();" style="background:#fff; border:1px solid #f0e6e0; border-radius:16px; padding:20px;">
+      <input placeholder="Name" required style="width:100%; padding:10px; border:1px solid #e8e0de; border-radius:8px; margin-bottom:10px;">
+      <input type="email" placeholder="Email" required style="width:100%; padding:10px; border:1px solid #e8e0de; border-radius:8px; margin-bottom:10px;">
+      <textarea placeholder="Message" rows="4" required style="width:100%; padding:10px; border:1px solid #e8e0de; border-radius:8px; margin-bottom:10px;"></textarea>
+      <button aria-label="action" class="btn" style="width:100%;">Send →</button>
+    </form>
+    <div style="background:#0f0f0f; color:#fff; border-radius:16px; padding:20px;">
+      <h3 style="font-weight:800; margin-bottom:10px;">LYLILI.love</h3>
+      <p style="color:#aaa; font-size:13px; line-height:1.6;">Email: help@lylili.love<br>Instagram: <a href="https://www.instagram.com/lylili.love" target="_blank" style="color:#00ffa3;">@lylili.love</a><br>YouTube: <a href="https://www.youtube.com/@LYLILIlove" target="_blank" style="color:#00ffa3;">@LYLILIlove</a><br><br>Видео подтягиваются с YouTube канала автоматически.</p>
+      <div style="margin-top:12px; aspect-ratio:16/9; border-radius:10px; overflow:hidden; border:1px solid #222;">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9bZkp7q19f0" frameborder="0" allowfullscreen style="width:100%; height:100%;"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer"><div class="container"><div class="copy"><span>© 2026 LYLILI.love</span></div></div></footer>
+<div id="toast" class="toast"></div>
+{% include "chat_widget.html" %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
