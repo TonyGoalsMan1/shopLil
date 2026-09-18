@@ -39,21 +39,30 @@ class ContentCuratorAgent(Agent):
         out.write_text(json.dumps(ideas, ensure_ascii=False, indent=2), encoding="utf-8")
         self.log("INFO", f"new gift ideas: {[p['name'] for p in picks]}")
 
-        # автономно добавляем один подарок в app.py если его еще нет (демо)
-        app_py = self.site_root / "app.py"
-        text = app_py.read_text(encoding="utf-8")
-        new_id = 7
-        if f'"id": {new_id}' not in text:
-            # вставляем перед закрытием списка PRODUCTS
-            insert = f'    {{"id": {new_id}, "name": "{picks[0]["name"]}", "price": 59, "emoji": "{picks[0]["emoji"]}", "color": "{picks[0]["colors"][0]}", "desc": "{picks[0]["desc"]}"}},\n]'
-            text = text.replace("]", insert, 1) if "]" in text else text
-            # fallback: просто логируем если парсинг сложный
-            if insert.strip() not in text:
-                self.log("WARN", "auto-insert skipped, manual add needed")
+        # автономно добавляем один подарок в БД lylili.db (безопасно, без порчи кода)
+        try:
+            import sqlite3
+            db_path = self.site_root / "lylili.db"
+            if db_path.exists():
+                con = sqlite3.connect(db_path)
+                # найти свободный id
+                cur = con.cursor()
+                cur.execute("SELECT MAX(id) FROM products")
+                max_id = cur.fetchone()[0] or 10
+                new_id = max_id + 1
+                # проверяем нет ли уже такого имени
+                cur.execute("SELECT id FROM products WHERE name=?", (picks[0]["name"],))
+                if not cur.fetchone():
+                    cur.execute("INSERT INTO products (id,name,price,emoji,color,desc,rarity,owners) VALUES (?,?,?,?,?,?,?,?)",
+                                (new_id, picks[0]["name"], 59, picks[0]["emoji"], picks[0]["colors"][0], picks[0]["desc"], "epic", 500))
+                    con.commit()
+                    self.log("SUCCESS", f"auto-added gift {picks[0]['name']} id={new_id} to DB")
+                    ideas["auto_added"] = {**picks[0], "id": new_id}
+                con.close()
             else:
-                app_py.write_text(text, encoding="utf-8")
-                self.log("SUCCESS", f"auto-added gift {picks[0]['name']} to app.py")
-                ideas["auto_added"] = picks[0]
+                self.log("WARN", "no DB, skip auto-add")
+        except Exception as e:
+            self.log("WARN", f"DB auto-add failed: {e}")
 
         self.save_state(ideas)
         return ideas

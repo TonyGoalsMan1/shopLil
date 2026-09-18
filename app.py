@@ -18,8 +18,7 @@ SECURITY_HEADERS = {
 @app.after_request
 def add_security_headers(resp):
     for k,v in SECURITY_HEADERS.items():
-        resp.headers[k    {"id": 7, "name": "Unicorn — Aurora", "price": 59, "emoji": "🦄", "color": "#ff8fab", "desc": "Holo finish · Ultra rare"},
-]=v
+        resp.headers[k]=v
     return resp
 
 _rate = defaultdict(list)
