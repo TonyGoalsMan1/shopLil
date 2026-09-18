@@ -28,12 +28,35 @@
 <div class="container" style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:32px; padding:32px 24px; max-width:1100px;">
   <div>
     <div style="background:#fff; border:1px solid #f0e6e0; border-radius:20px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,0.08);">
-      <img loading="lazy" src="{{ product.image }}" alt="{{ product.name }}" style="width:100%; height:auto; display:block;">
-      <div style="padding:12px; background:#fffaf7; border-top:1px solid #f0e6e0; display:flex; gap:8px; overflow:auto;">
-        <img loading="lazy" src="{{ product.image }}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid #d4af37;">
-        <img loading="lazy" src="{{ product.image }}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; opacity:0.6;">
-        <img loading="lazy" src="{{ product.image }}" style="width:80px; height:80px; object-fit:cover; border-radius:10px; opacity:0.6;">
+      <div style="position:relative; background:#fffaf7;">
+        <img id="mainImage" src="{{ product.image }}" alt="{{ product.name }}" style="width:100%; height:520px; object-fit:contain; display:block; background:#fff; cursor:zoom-in;" onclick="open360()">
+        <button onclick="open360()" style="position:absolute; top:12px; right:12px; background:rgba(15,15,15,0.85); color:#fff; border:1px solid #333; padding:8px 12px; border-radius:999px; font-size:11px; font-weight:800; cursor:pointer; backdrop-filter:blur(6px);">🔄 360° — Смотреть</button>
+        <div style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(15,15,15,0.8); color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:600;">Нажми для 360° · Тяни чтобы вращать</div>
       </div>
+      <div style="padding:12px; background:#fffaf7; border-top:1px solid #f0e6e0; display:flex; gap:8px; overflow:auto; align-items:center;">
+        <img onclick="switchImage(this, '{{ product.image }}')" src="{{ product.image }}" class="thumb active" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid #d4af37; cursor:pointer; opacity:1;">
+        <img onclick="switchImage(this, '{{ product.image }}')" src="{{ product.image }}" class="thumb" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid transparent; cursor:pointer; opacity:0.7; filter: brightness(0.9);">
+        <img onclick="switchImage(this, '{{ product.image }}')" src="{{ product.image }}" class="thumb" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid transparent; cursor:pointer; opacity:0.7; filter: hue-rotate(15deg);">
+        <img onclick="switchImage(this, '{{ product.image }}')" src="{{ product.image }}" class="thumb" style="width:80px; height:80px; object-fit:cover; border-radius:10px; border:2px solid transparent; cursor:pointer; opacity:0.7; filter: contrast(1.1);">
+        <button onclick="open360()" style="min-width:80px; height:80px; border-radius:10px; border:2px dashed #d4af37; background:#fff; cursor:pointer; font-weight:800; font-size:11px; color:#0f0f0f;">🔄<br>360°</button>
+      </div>
+    </div>
+
+    <!-- 360 Modal -->
+    <div id="view360" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; flex-direction:column; padding:20px;">
+      <div style="position:absolute; top:18px; right:18px; display:flex; gap:8px;">
+        <span style="background:#fff; color:#0f0f0f; padding:8px 12px; border-radius:999px; font-size:11px; font-weight:800;">360° — тяни мышью / пальцем</span>
+        <button onclick="close360()" style="background:#fff; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <div id="box360" style="width:min(520px, 90vw); height:min(520px, 70vh); background:#fff; border-radius:20px; overflow:hidden; position:relative; box-shadow:0 24px 64px rgba(0,0,0,0.5); cursor:grab; user-select:none; display:flex; align-items:center; justify-content:center;">
+        <img id="img360" src="{{ product.image }}" style="width:100%; height:100%; object-fit:contain; transform: rotateY(0deg); transition: transform 0.1s; pointer-events:none;">
+        <div style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(15,15,15,0.85); color:#fff; padding:6px 12px; border-radius:999px; font-size:11px; font-weight:700;" id="angle360">0° · Тяни →</div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+        <button onclick="auto360()" style="padding:8px 14px; border-radius:999px; border:1px solid #333; background:#00ffa3; color:#0a0a0a; font-weight:800; cursor:pointer;">▶ Авто-вращение</button>
+        <button onclick="close360()" style="padding:8px 14px; border-radius:999px; border:1px solid #333; background:#fff; color:#0f0f0f; font-weight:800; cursor:pointer;">Закрыть</button>
+      </div>
+      <div style="margin-top:8px; color:#888; font-size:11px;">360° симуляция — реальная одежда LYLILI, фото с lylili.love</div>
     </div>
     <div style="margin-top:16px; background:#0f0f0f; border-radius:16px; overflow:hidden; border:1px solid #1e1e1e;">
       <div style="padding:10px 14px; background:#1a1a1a; font-weight:800; font-size:12px; letter-spacing:1px; color:#fff;">▶ VIDEO — {{ product.name }}</div>
@@ -95,6 +118,51 @@
 <div id="toast" class="toast"></div>
 {% include "chat_widget.html" %}
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-<script>async function setLang(lang){ await fetch('/api/lang',{method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({lang})}); location.reload(); }</script>
+<script>
+function switchImage(el, src){
+  document.getElementById('mainImage').src = src;
+  document.querySelectorAll('.thumb').forEach(t=>{ t.style.border='2px solid transparent'; t.style.opacity='0.7'; t.classList.remove('active'); });
+  el.style.border='2px solid #d4af37'; el.style.opacity='1'; el.classList.add('active');
+}
+let is360=false, startX=0, angle=0, autoInt=null;
+function open360(){
+  document.getElementById('view360').style.display='flex';
+  is360=true; angle=0;
+  document.addEventListener('keydown', esc360);
+}
+function close360(){
+  document.getElementById('view360').style.display='none';
+  is360=false; if(autoInt) clearInterval(autoInt);
+  document.removeEventListener('keydown', esc360);
+}
+function esc360(e){ if(e.key==='Escape') close360(); }
+function auto360(){
+  if(autoInt){ clearInterval(autoInt); autoInt=null; return; }
+  autoInt=setInterval(()=>{ angle=(angle+2)%360; document.getElementById('img360').style.transform='rotateY('+angle+'deg)'; document.getElementById('angle360').textContent=angle+'°'; }, 30);
+}
+// drag
+(function(){
+  const box=document.getElementById('box360');
+  if(!box) return;
+  let dragging=false;
+  box.addEventListener('mousedown', e=>{ dragging=true; startX=e.clientX; box.style.cursor='grabbing'; });
+  box.addEventListener('touchstart', e=>{ dragging=true; startX=e.touches[0].clientX; }, {passive:true});
+  window.addEventListener('mouseup', ()=>{ dragging=false; if(box) box.style.cursor='grab'; });
+  window.addEventListener('touchend', ()=> dragging=false);
+  window.addEventListener('mousemove', e=>{
+    if(!dragging || !is360) return;
+    const dx=e.clientX - startX; angle=(angle + dx*0.6) % 360; startX=e.clientX;
+    document.getElementById('img360').style.transform='rotateY('+angle+'deg)';
+    document.getElementById('angle360').textContent=Math.round(angle)+'° · Тяни';
+  });
+  window.addEventListener('touchmove', e=>{
+    if(!dragging || !is360) return;
+    const dx=e.touches[0].clientX - startX; angle=(angle + dx*0.6) % 360; startX=e.touches[0].clientX;
+    document.getElementById('img360').style.transform='rotateY('+angle+'deg)';
+    document.getElementById('angle360').textContent=Math.round(angle)+'°';
+  }, {passive:true});
+})();
+async function setLang(lang){ await fetch('/api/lang',{method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({lang})}); location.reload(); }
+</script>
 </body>
 </html>
